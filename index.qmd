@@ -99,7 +99,7 @@ format:
 
 ::: {style="text-align:center;"}
 
-![](./assets/qr-code.png){width="250px"}
+![](./assets/qrcode.png){width="256px"}
 
 :::
 
@@ -354,7 +354,6 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 #### 📒 Shakespeare
 
 - [![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)  
-- [Web Version](https://saforem2.github.io/wordplay/quarto/shakespeare.html)
 - [`shakespeare.ipynb`](https://github.com/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)
 
 #### 🔗 Links

@@ -824,8 +824,6 @@ style="font-size: 0.9em; width: 100%!important; height: 100%!important;">
 #### 📒 Shakespeare
 
 - [![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)  
-- [Web
-  Version](https://saforem2.github.io/wordplay/quarto/shakespeare.html)
 - [`shakespeare.ipynb`](https://github.com/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)
 
 #### 🔗 Links
