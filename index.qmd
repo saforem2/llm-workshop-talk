@@ -60,17 +60,16 @@ format:
           highlightTheme: css/syntax-light.scss
     themesPath: './docs/css/'
   gfm:
-    author: Sam Foreman
     output-file: "README.md"
 ---
 
-# Creating Small(-ish) LLMs[^slides-gh]
+# LLMs from Scratch
 
 ::: {layout="[ 50, 50 ]" layout-valign="center"}
 
 ::: {.col1}
 
-[**LLM Tutorial / Workshop**]{.dim-text}  
+[**[LLM Workshop](https://github.com/argonne-lcf/llm-workshop)**]{.dim-text}  
 [Argonne National Laboratory]{.dim-text}  
 [Building 240, Room 1501]{.dim-text}  
 <br>
@@ -79,10 +78,10 @@ format:
 [[{{< bi person-badge >}}Sam Foreman](https://samforeman.me)]{style="font-weight: 600;"}  
 [2024-02-13]{.dim-text style="font-size: 0.8em;"}  
 
-- [{{< iconify line-md github-loop >}}`argonne-lcf/llm-workshop`](https://github.com/brettin/llm_tutorial)
+- [{{< iconify line-md github-loop >}}`argonne-lcf/llm-workshop`](https://github.com/argonne-lcf/llm-workshop)
 - [{{< iconify line-md github-loop >}}`saforem2/`](https://github.com/saforem2)
-  - [{{< iconify line-md github-loop >}}`wordplay`](https://saforem2.github.io/wordplay) (GitHub)
-  - [{{< bi easel >}} `llm-workshop-talk`](https://saforem2.github.io/LLM-tutorial) (slides)
+  - [{{< iconify line-md github-loop >}}`wordplay` 🎮💬](https://saforem2.github.io/wordplay)
+  - [{{< bi easel >}} `llm-workshop-talk`](https://saforem2.github.io/LLM-tutorial)
 
 
 :::
@@ -99,7 +98,7 @@ format:
 
 ::: {style="text-align:center;"}
 
-![](./assets/qrcode.png){width="256px"}
+![(link to [slides](https://saforem2.github.io/llm-workshop-talk))](./assets/qrcode.png){width="256px"}
 
 :::
 
@@ -108,7 +107,6 @@ format:
 :::
 
 [^llm-animation]: [{{< iconify line-md github-loop >}}`Hannibal046/Awesome-LLM`](https://github.com/Hannibal046/Awesome-LLM)
-[^slides-gh]: [{{< iconify line-md github-loop >}}`saforem2/LLM-tutorial`](https://github.com/saforem2/LLM-tutorial)
 
 # Emergent Abilities {background-color="#FBFBFD"}
 
@@ -246,16 +244,23 @@ Language Model trained for causal language modeling. Video from: [🤗 Generatio
 The simplest, fastest repository for training / finetuning GPT based models.
 :::
 
+# [{{< iconify line-md github-loop >}}`saforem2/wordplay` 🎮💬 ](https://github.com/saforem2/wordplay)
+
+::: {#fig-compare layout="[[40,40]]" layout-valign="bottom" style="display: flex; align-items: flex-end;"}
+
+![`nanoGPT`](https://github.com/saforem2/wordplay/blob/main/assets/car.png?raw=true){#fig-nanogpt width="256px"}
+
+![`wordplay` 🎮 💬](https://github.com/saforem2/wordplay/blob/main/assets/robot.png?raw=true){#fig-wordplay width="150px"}
+
+`nanoGPT`, transformed.
+
+:::
+
 
 # Install
 
 ```bash
-git clone https://github.com/saforem2/wordplay
-cd wordplay
-mkdir -p venv
-python3 -m venv venv --system-site-packages
-source venv/bin/activate
-python3 -m pip install -e .
+python3 -m pip install "git+https://github.com/saforem2/wordplay.git"
 python3 -c 'import wordplay; print(wordplay.__file__)'
 # ./wordplay/src/wordplay/__init__.py
 ```
@@ -354,7 +359,7 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 #### 📒 Shakespeare
 
 - [![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)  
-- [`shakespeare.ipynb`](https://github.com/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)
+- [`shakespeare.ipynb`](https://github.com/saforem2/wordplay/blob/main/notebooks/shakespeare.ipynb)
 
 #### 🔗 Links
 
