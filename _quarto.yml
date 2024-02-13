@@ -46,9 +46,9 @@ citation:
 #
 website:
   favicon: "./favicon.svg"
-  description: "Creating Small(-ish) LLMs"
+  description: "LLMs from Scratch"
   page-navigation: true
-  title: "Creating Small(-ish) LLMs"
+  title: "LLMs from Scratch"
   site-url: "https://saforem2.github.io/llm-workshop-talk"
   # favicon: "./favicon.svg"
   back-to-top-navigation: true
