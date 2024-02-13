@@ -1,0 +1,391 @@
+---
+filters:
+  - roughnotation
+format:
+  revealjs:
+    appearance:
+      appearparents: true
+    code-line-numbers: false
+    code-link: false
+    code-copy: false
+    # callout-appearance: simple
+    # syntax-definitions:
+    #   - ./docs/python.xml
+    scrollable: true
+    title-block-style: none
+    slide-number: c
+    title-slide-style: default
+    chalkboard:
+      buttons: false
+    auto-animate: true
+    reference-location: section
+    touch: true
+    pause: false
+    footnotes-hover: true
+    citations-hover: true
+    preview-links: true
+    controls-tutorial: true
+    controls: false
+    logo: "https://raw.githubusercontent.com/saforem2/llm-lunch-talk/main/docs/assets/anl.svg"
+    history: false
+    highlight-style: "atom-one"
+    css:
+      - css/default.css
+      - css/callouts-html.css
+    theme:
+      # - white
+      # - css/light.scss
+      - css/common.scss
+      # - css/syntax-light.scss
+    self-contained: false
+    embed-resources: false
+    self-contained-math: false
+    center: true
+    default-image-extension: svg
+    code-overflow: scroll
+    html-math-method: katex
+    fig-align: center
+    mermaid:
+      theme: dark
+    # revealjs-plugins:
+    #   - RevealMenu
+    menu:
+      markers: true
+      themes:
+        - name: Dark
+          theme: css/dark.scss
+          highlightTheme: css/syntax-dark.scss
+        - name: Light
+          theme: css/light.scss
+          highlightTheme: css/syntax-light.scss
+    themesPath: './docs/css/'
+  gfm:
+    author: Sam Foreman
+    output-file: "README.md"
+---
+
+# Creating Small(-ish) LLMs[^slides-gh]
+
+::: {layout="[ 50, 50 ]" layout-valign="center"}
+
+::: {.col1}
+
+[**LLM Tutorial / Workshop**]{.dim-text}  
+[Argonne National Laboratory]{.dim-text}  
+[Building 240, Room 1501]{.dim-text}  
+<br>
+<br>
+
+[[{{< bi person-badge >}}Sam Foreman](https://samforeman.me)]{style="font-weight: 600;"}  
+[2024-02-13]{.dim-text style="font-size: 0.8em;"}  
+
+- [{{< iconify line-md github-loop >}}`argonne-lcf/llm-workshop`](https://github.com/brettin/llm_tutorial)
+- [{{< iconify line-md github-loop >}}`saforem2/`](https://github.com/saforem2)
+  - [{{< iconify line-md github-loop >}}`wordplay`](https://saforem2.github.io/wordplay) (GitHub)
+  - [{{< bi easel >}} `llm-workshop-talk`](https://saforem2.github.io/LLM-tutorial) (slides)
+
+
+:::
+
+::: {.col2 style="font-size: 0.6em; text-align: center;"}
+
+::: {style="text-align: center;"}
+![](https://github.com/Hannibal046/Awesome-LLM/raw/main/resources/image8.gif)
+
+[LLMs have taken the ~~NLP community~~ **world** by storm[^llm-animation]]{.dim-text style="font-size: 0.7em;"}
+
+:::
+
+
+::: {style="text-align:center;"}
+
+![](./assets/qr-code.png){width="250px"}
+
+:::
+
+:::
+
+:::
+
+[^llm-animation]: [{{< iconify line-md github-loop >}}`Hannibal046/Awesome-LLM`](https://github.com/Hannibal046/Awesome-LLM)
+[^slides-gh]: [{{< iconify line-md github-loop >}}`saforem2/LLM-tutorial`](https://github.com/saforem2/LLM-tutorial)
+
+# Emergent Abilities {background-color="#FBFBFD"}
+
+::: {width="66%" style="text-align: center;"}
+
+<img src="https://github.com/saforem2/llm-lunch-talk/blob/main/docs/assets/emergent-abilities.gif?raw=true" height="75%" />
+
+[Emergent abilities of Large Language Models](https://arxiv.org/abs/2206.07682) @yao2023tree
+:::
+
+
+# Training LLMs
+
+
+::: {layout="[ 50, 40 ]" layout-valign="center"}
+
+::: {#fig-evolution}
+
+![](https://github.com/Mooler0410/LLMsPracticalGuide/raw/main/imgs/survey-gif-test.gif)
+
+Visualization from @yang2023harnessing
+
+:::
+
+::: {}
+
+![](https://github.com/saforem2/llm-lunch-talk/blob/main/docs/assets/it_hungers.jpeg?raw=true)
+
+
+:::
+
+:::
+
+
+# Life-Cycle of the LLM {auto-animate=true}
+
+::: {layout="[ 45, 55 ]" layout-valign=center}
+
+::: {#column-one}
+
+1. Data collection + preprocessing
+
+2. **Pre-training**
+    - Architecture decisions:  
+      `{model_size, hyperparameters,`  
+      `parallelism, lr_schedule, ...}`
+
+3. Supervised Fine-Tuning
+    - Instruction Tuning
+    - Alignment
+
+4. Deploy (+ monitor, re-evaluate, etc.)
+
+:::
+
+::: {#column-two}
+
+::: {#fig-pretrain-two}
+
+![](https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif)
+
+**Pre-training**: Virtually all of the compute used during pretraining phase[^il-transf].
+:::
+
+:::
+
+[^il-transf]: Figure from [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
+
+:::
+
+# Forward Pass
+
+
+::: {#fig-forward-pass}
+
+<video data-autoplay src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/assisted-generation/gif_1_1080p.mov"></video>
+
+
+Language Model trained for causal language modeling. Video from: [🤗 Generation with LLMs](https://huggingface.co/docs/transformers/main/en/llm_tutorial)
+:::
+
+
+# Generating Text
+
+::: {#fig-generating-text}
+
+<video data-autoplay src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/assisted-generation/gif_2_1080p.mov"></video>
+
+Language Model trained for causal language modeling. Video from: [🤗 Generation with LLMs](https://huggingface.co/docs/transformers/main/en/llm_tutorial)
+:::
+
+
+
+
+# Life-Cycle of the LLM: Pre-training {auto-animate=true}
+
+
+::: {#fig-pretrain-two}
+
+![](https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif)
+
+**Pre-training**: Virtually all of the compute used during pretraining phase
+:::
+
+
+# Life-Cycle of the LLM: Fine-Tuning {auto-animate=true style="font-size: 0.8em;"}
+
+::: {#fig-pretrain-two}
+
+![](https://jalammar.github.io/images/gpt3/10-gpt3-fine-tuning.gif)
+
+**Fine-tuning**[^ill-transf1]: Fine-tuning actually updates the model's weights to make the model better at a certain task.
+
+:::
+
+[^ill-transf1]: Figure from [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
+
+
+# Assistant Models {.centeredslide background-color="#181D29"}
+
+[![](https://github.com/saforem2/LLM-tutorial/blob/main/docs/assets/jailbreak.jpeg?raw=true)]{.preview-image style="text-align:center; margin-left:auto; margin-right: auto;"}
+
+
+# [{{< iconify line-md github-loop >}}`saforem2/wordplay` 🎮💬 ](https://github.com/saforem2/wordplay)
+
+<!-- - [{{< iconify mdi github-face >}} `saforem2/wordplay`](https://github.com/saforem2/wordplay) -->
+
+- Fork of Andrej Karpathy's `nanoGPT`
+
+::: {#fig-nanoGPT}
+
+![](https://github.com/saforem2/nanoGPT/raw/master/assets/nanogpt.jpg)
+
+The simplest, fastest repository for training / finetuning GPT based models.
+:::
+
+
+# Install
+
+```bash
+git clone https://github.com/saforem2/wordplay
+cd wordplay
+mkdir -p venv
+python3 -m venv venv --system-site-packages
+source venv/bin/activate
+python3 -m pip install -e .
+python3 -c 'import wordplay; print(wordplay.__file__)'
+# ./wordplay/src/wordplay/__init__.py
+```
+
+# Dependencies
+
+- [`transformers`](https://github.com/huggingface/transformers) for
+  {{< iconify noto hugging-face >}} transformers (to load `GPT-2` checkpoints)
+- [`datasets`](https://github.com/huggingface/datasets) for {{< iconify noto
+  hugging-face >}} datasets (if you want to use OpenWebText)
+- [`tiktoken`](https://github.com/openai/tiktoken) for OpenAI's fast BPE code
+- [`wandb`](https://wandb.ai) for optional logging
+- [`tqdm`](https://github.com/tqdm/tqdm) for progress bars
+
+
+# Quick Start
+
+- We start with training a character-level GPT on the works of Shakespeare.
+
+  1. Downloading the data (~ 1MB) file
+  2. Convert raw text to one large stream of integers
+
+  ```bash
+  python3 data/shakespeare_char/prepare.py
+  ```
+
+  This will create `data/shakespeare_char/{train.bin, val.bin}`.
+
+# [{{< iconify fa-brands github >}} `model.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py) {height="100%"}
+
+<!-- ::: {style="font-size: 0.75em;"} -->
+
+::: {.panel-tabset style="font-size: 0.75em; width: 100%!important; height: 100%!important;"}
+
+### `CausalSelfAttention`
+
+```{.python include="model.py" code-line-numbers="true" start-line=65 end-line=155}
+```
+### `LayerNorm`
+
+```{.python include="model.py" code-line-numbers="true" start-line=43 end-line=62}
+```
+
+### `MLP`
+
+```{.python include="model.py" code-line-numbers="true" start-line=165 end-line=202}
+```
+
+### `Block`
+
+```{.python include="model.py" code-line-numbers="true" start-line=205 end-line=217}
+```
+
+### `GPT`
+
+```{.python include="model.py" code-line-numbers="true" start-line=220 end-line=525}
+```
+
+:::
+
+# [{{< iconify fa-brands github >}} `trainer.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py) {height="100%"}
+
+
+::: {.panel-tabset style="font-size: 0.75em; width: 100%; height: 100%;"}
+
+### `get_batch`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=446 end-line=474}
+```
+
+### `estimate_loss`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=487 end-line=500}
+```
+
+### `_forward_step`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=534 end-line=542}
+```
+
+### `_backward_step`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=544 end-line=569}
+```
+
+### `train_step`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=571 end-line=674}
+```
+
+:::
+
+# Hands-on Tutorial
+
+::: {.panel-tabset style="font-size: 0.9em; width: 100%!important; height: 100%!important;"}
+
+#### 📒 Shakespeare
+
+- [![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)  
+- [Web Version](https://saforem2.github.io/wordplay/quarto/shakespeare.html)
+- [`shakespeare.ipynb`](https://github.com/saforem2/wordplay/blob/master/notebooks/shakespeare.ipynb)
+
+#### 🔗 Links
+
+- [📊 [Slides](https://saforem2.github.io/llm-workshop-talk/#/llm-workshop-talk)]{style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt"}
+- [🏡 [Project Website](https://saforem2.github.io/wordplay)]{style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt"}
+- [💻 [`saforem2/wordplay`](https://github.com/saforem2/wordplay)]{style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt"}
+
+:::
+
+
+# {background-iframe="https://saforem2.github.io/wordplay"}
+
+
+# Links
+
+1. [{{< fa brands github >}} Hannibal046/Awesome-LLM](https://github.com/Hannibal046/Awesome-LLM/blob/main/README.md) [[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)]{.inline-image}
+2. [{{< fa brands github >}} Mooler0410/LLMsPracticalGuide](https://github.com/Mooler0410/LLMsPracticalGuide)
+3. [Large Language Models (in 2023)](https://docs.google.com/presentation/d/1636wKStYdT_yRPbJNrf8MLKpQghuWGDmyHinHhAKeXY/edit#slide=id.g238b2698243_0_734https://docs.google.com/presentation/d/1636wKStYdT_yRPbJNrf8MLKpQghuWGDmyHinHhAKeXY/edit#slide=id.g238b2698243_0_734)
+4. [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
+5. [Generative AI Exists because of the Transformer](https://ig.ft.com/generative-ai/)
+6. [GPT in 60 Lines of Numpy](https://jaykmody.com/blog/gpt-from-scratch/)
+7. [Better Language Models and their Implications](https://openai.com/research/better-language-models)  
+8. [{{< fa solid flask-vial >}}]{.green-text} [Progress / Artefacts / Outcomes from 🌸 Bloom BigScience](https://bigscience.notion.site/ebe3760ae1724dcc92f2e6877de0938f?v=2faf85dc00794321be14bc892539dd4f)
+
+::: {.callout-note title="Acknowledgements"}
+This research used resources of the Argonne Leadership Computing Facility,  
+which is a DOE Office of Science User Facility supported under Contract DE-AC02-06CH11357.
+:::
+
+# References
+
+::: {#refs}
+:::
