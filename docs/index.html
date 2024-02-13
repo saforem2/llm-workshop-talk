@@ -571,17 +571,18 @@ Figure&nbsp;1: Visualization from <span class="citation" data-cites="yang2023har
 <div id="fig-pretrain-two" class="quarto-figure quarto-figure-center quarto-float">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-pretrain-two-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img data-src="https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif">
+<p><img data-src="https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif"></p>
+<p><strong>Pre-training</strong>: Virtually all of the compute used during pretraining phase.</p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pretrain-two-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: <strong>Pre-training</strong>: Virtually all of the compute used during pretraining phase<sup>1</sup>.
+Figure&nbsp;2: Figure from <a href="http://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer</a>
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<aside><ol class="aside-footnotes"></ol></aside></section>
+</section>
 
 <section id="forward-pass" class="title-slide slide level1 center">
 <h1>Forward Pass</h1>
@@ -686,14 +687,14 @@ Figure&nbsp;7: The simplest, fastest repository for training / finetuning GPT ba
 </ul>
 </section>
 
-<section id="model.py" class="title-slide slide level1 center" height="100%">
-<h1><a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>model.py</code></a></h1>
-<!-- ::: {style="font-size: 0.75em;"} -->
+<section id="model-model.py" class="title-slide slide level1 center" height="100%">
+<h1>Model <a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>model.py</code></a></h1>
 <div class="panel-tabset" style="font-size: 0.75em; width: 100%!important; height: 100%!important;">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code>CausalSelfAttention</code></a></li><li><a href="#tabset-1-2"><code>LayerNorm</code></a></li><li><a href="#tabset-1-3"><code>MLP</code></a></li><li><a href="#tabset-1-4"><code>Block</code></a></li><li><a href="#tabset-1-5"><code>GPT</code></a></li></ul>
 <div class="tab-content" style="font-size: 0.75em; width: 100%!important; height: 100%!important;">
 <div id="tabset-1-1">
-<div class="sourceCode" id="cb3" data-startfrom="65"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 64;"><span id="cb3-65"><a></a><span class="kw">class</span> CausalSelfAttention(nn.Module):</span>
+<div class="sourceCode" id="cb3" data-startfrom="64"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 63;"><span id="cb3-64"><a></a></span>
+<span id="cb3-65"><a></a><span class="kw">class</span> CausalSelfAttention(nn.Module):</span>
 <span id="cb3-66"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: GPTModelConfig):</span>
 <span id="cb3-67"><a></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
 <span id="cb3-68"><a></a>        <span class="cf">assert</span> config.n_embd <span class="op">%</span> config.n_head <span class="op">==</span> <span class="dv">0</span></span>
@@ -1174,13 +1175,458 @@ Figure&nbsp;7: The simplest, fastest repository for training / finetuning GPT ba
 </div>
 </section>
 
-<section id="trainer.py" class="title-slide slide level1 center" height="100%">
-<h1><a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>trainer.py</code></a></h1>
+<section id="trainer-trainer.py" class="title-slide slide level1 center" height="100%">
+<h1>Trainer <a href="https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py"><iconify-icon inline="" icon="fa-brands:github"></iconify-icon> <code>trainer.py</code></a></h1>
 <div class="panel-tabset" style="font-size: 0.75em; width: 100%; height: 100%;">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>get_batch</code></a></li><li><a href="#tabset-2-2"><code>estimate_loss</code></a></li><li><a href="#tabset-2-3"><code>_forward_step</code></a></li><li><a href="#tabset-2-4"><code>_backward_step</code></a></li><li><a href="#tabset-2-5"><code>train_step</code></a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1"><code>_forward_step</code></a></li><li><a href="#tabset-2-2"><code>_backward_step</code></a></li><li><a href="#tabset-2-3"><code>train_step</code></a></li><li><a href="#tabset-2-4"><code>get_batch</code></a></li><li><a href="#tabset-2-5"><code>estimate_loss</code></a></li></ul>
 <div class="tab-content" style="font-size: 0.75em; width: 100%; height: 100%;">
 <div id="tabset-2-1">
-<div class="sourceCode" id="cb8" data-startfrom="446"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 445;"><span id="cb8-446"><a></a>    <span class="kw">def</span> get_batch(<span class="va">self</span>, split: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.Tensor, torch.Tensor]:</span>
+<div class="sourceCode" id="cb8" data-code-line-numbers="534-542"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="co">"""</span></span>
+<span id="cb8-2"><a></a><span class="co">wordplay/trainer.py</span></span>
+<span id="cb8-3"><a></a></span>
+<span id="cb8-4"><a></a><span class="co">```markdown</span></span>
+<span id="cb8-5"><a></a><span class="co">&gt; [!</span><span class="al">NOTE</span><span class="co">]</span></span>
+<span id="cb8-6"><a></a><span class="co">&gt;  If your cluster does not have Infiniband interconnect, prepend:</span></span>
+<span id="cb8-7"><a></a><span class="co">&gt;  `NCCL_IB_DISABLE=1`</span></span>
+<span id="cb8-8"><a></a><span class="co">```</span></span>
+<span id="cb8-9"><a></a><span class="co">"""</span></span>
+<span id="cb8-10"><a></a><span class="im">from</span> __future__ <span class="im">import</span> absolute_import, annotations, division, print_function</span>
+<span id="cb8-11"><a></a><span class="im">from</span> dataclasses <span class="im">import</span> asdict</span>
+<span id="cb8-12"><a></a><span class="im">import</span> logging</span>
+<span id="cb8-13"><a></a><span class="im">import</span> math</span>
+<span id="cb8-14"><a></a><span class="im">from</span> os <span class="im">import</span> PathLike</span>
+<span id="cb8-15"><a></a><span class="im">import</span> os</span>
+<span id="cb8-16"><a></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb8-17"><a></a><span class="im">import</span> time</span>
+<span id="cb8-18"><a></a><span class="im">from</span> typing <span class="im">import</span> Any, Optional, Union</span>
+<span id="cb8-19"><a></a></span>
+<span id="cb8-20"><a></a><span class="im">from</span> ezpz <span class="im">import</span> (</span>
+<span id="cb8-21"><a></a>    get_local_rank,</span>
+<span id="cb8-22"><a></a>    get_rank,</span>
+<span id="cb8-23"><a></a>    get_torch_device,</span>
+<span id="cb8-24"><a></a>    get_world_size,</span>
+<span id="cb8-25"><a></a>    timeitlogit</span>
+<span id="cb8-26"><a></a>)</span>
+<span id="cb8-27"><a></a><span class="im">from</span> ezpz.history <span class="im">import</span> BaseHistory</span>
+<span id="cb8-28"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-29"><a></a><span class="im">from</span> rich.table <span class="im">import</span> Table</span>
+<span id="cb8-30"><a></a><span class="im">from</span> rich.text <span class="im">import</span> Text</span>
+<span id="cb8-31"><a></a><span class="im">import</span> torch</span>
+<span id="cb8-32"><a></a><span class="im">from</span> torch.nn.parallel <span class="im">import</span> DistributedDataParallel <span class="im">as</span> DDP</span>
+<span id="cb8-33"><a></a><span class="im">from</span> tqdm <span class="im">import</span> trange</span>
+<span id="cb8-34"><a></a><span class="im">import</span> wandb</span>
+<span id="cb8-35"><a></a></span>
+<span id="cb8-36"><a></a><span class="im">from</span> wordplay.configs <span class="im">import</span> ExperimentConfig, GPTModelConfig, add_to_ckpts_file</span>
+<span id="cb8-37"><a></a><span class="im">from</span> wordplay.model <span class="im">import</span> GPT</span>
+<span id="cb8-38"><a></a></span>
+<span id="cb8-39"><a></a></span>
+<span id="cb8-40"><a></a>log <span class="op">=</span> logging.getLogger(<span class="va">__name__</span>)</span>
+<span id="cb8-41"><a></a></span>
+<span id="cb8-42"><a></a>RANK <span class="op">=</span> get_rank()</span>
+<span id="cb8-43"><a></a>WORLD_SIZE <span class="op">=</span> get_world_size()</span>
+<span id="cb8-44"><a></a>DEVICE <span class="op">=</span> os.environ.get(<span class="st">'TORCH_DEVICE'</span>, get_torch_device())</span>
+<span id="cb8-45"><a></a><span class="co"># DEVICE = get_torch_device()  # 'cuda' if torch.cuda.is_available() else 'cpu'</span></span>
+<span id="cb8-46"><a></a></span>
+<span id="cb8-47"><a></a>ScalarLike <span class="op">=</span> Union[<span class="bu">float</span>, <span class="bu">int</span>, np.floating, <span class="bu">bool</span>]</span>
+<span id="cb8-48"><a></a></span>
+<span id="cb8-49"><a></a></span>
+<span id="cb8-50"><a></a><span class="kw">def</span> print_legend(verbose: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span>) <span class="op">-&gt;</span> Table:</span>
+<span id="cb8-51"><a></a>    legend <span class="op">=</span> {</span>
+<span id="cb8-52"><a></a>        <span class="st">"step"</span>: <span class="st">"Current training iteration"</span>,</span>
+<span id="cb8-53"><a></a>        <span class="st">"loss"</span>: <span class="st">"Loss value"</span>,</span>
+<span id="cb8-54"><a></a>        <span class="st">"dt"</span>: <span class="st">"Elapsed time per training step (measured in **ms**)"</span>,</span>
+<span id="cb8-55"><a></a>        <span class="st">"dtf"</span>: <span class="st">"Elapsed time per forward step (measured in **ms**)"</span>,</span>
+<span id="cb8-56"><a></a>        <span class="st">"dtb"</span>: <span class="st">"Elapsed time per backward step (measured in **ms**)"</span>,</span>
+<span id="cb8-57"><a></a>        <span class="st">"sps"</span>: <span class="st">"Samples per second"</span>,</span>
+<span id="cb8-58"><a></a>        <span class="st">"mtps"</span>: <span class="st">"Tokens per second, measured in MEGA (1 x 10^6) tokens / sec"</span>,</span>
+<span id="cb8-59"><a></a>        <span class="st">"mfu"</span>: <span class="st">"Model flops utilization"</span>,</span>
+<span id="cb8-60"><a></a>        <span class="st">"train_loss"</span>: <span class="st">"Training loss value"</span>,</span>
+<span id="cb8-61"><a></a>        <span class="st">"val_loss"</span>: <span class="st">"Validation loss value"</span>,</span>
+<span id="cb8-62"><a></a>    }</span>
+<span id="cb8-63"><a></a>    table <span class="op">=</span> Table(title<span class="op">=</span><span class="st">'Training Legend'</span>)</span>
+<span id="cb8-64"><a></a>    table.add_column(<span class="st">'abbr'</span>, justify<span class="op">=</span><span class="st">'center'</span>, style<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="cb8-65"><a></a>    table.add_column(<span class="st">'desc'</span>, justify<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb8-66"><a></a>    <span class="cf">for</span> key, val <span class="kw">in</span> legend.items():</span>
+<span id="cb8-67"><a></a>        table.add_row(<span class="ss">f'</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">'</span>, <span class="ss">f'</span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-68"><a></a>    <span class="cf">if</span> verbose <span class="kw">and</span> RANK <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb8-69"><a></a>        <span class="im">from</span> rich <span class="im">import</span> <span class="bu">print</span></span>
+<span id="cb8-70"><a></a>        <span class="bu">print</span>(table)</span>
+<span id="cb8-71"><a></a>    <span class="cf">return</span> table</span>
+<span id="cb8-72"><a></a></span>
+<span id="cb8-73"><a></a></span>
+<span id="cb8-74"><a></a><span class="kw">def</span> markdown_legend() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb8-75"><a></a>    <span class="im">from</span> rich.markdown <span class="im">import</span> Markdown</span>
+<span id="cb8-76"><a></a>    <span class="im">from</span> rich <span class="im">import</span> <span class="bu">print</span></span>
+<span id="cb8-77"><a></a>    text <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb8-78"><a></a><span class="st">    | name | description |</span></span>
+<span id="cb8-79"><a></a><span class="st">    | :--: | ---- |</span></span>
+<span id="cb8-80"><a></a><span class="st">    | `step` | Current training iteration |</span></span>
+<span id="cb8-81"><a></a><span class="st">    | `loss` | Loss value |</span></span>
+<span id="cb8-82"><a></a><span class="st">    | `dt` | Elapsed time per training step (measured in **ms**) |</span></span>
+<span id="cb8-83"><a></a><span class="st">    | `dtf` | Elapsed time per forward step (measured in **ms**) |</span></span>
+<span id="cb8-84"><a></a><span class="st">    | `dtb` | Elapsed time per backward step (measured in **ms**) |</span></span>
+<span id="cb8-85"><a></a><span class="st">    | `sps` | Samples per second |</span></span>
+<span id="cb8-86"><a></a><span class="st">    | `mtps` | Tokens per second, measured in MEGA (1 x 10^6) tokens / sec  |</span></span>
+<span id="cb8-87"><a></a><span class="st">    | `mfu` | Model flops utilization |</span></span>
+<span id="cb8-88"><a></a><span class="st">    | `train_loss` | Training loss value |</span></span>
+<span id="cb8-89"><a></a><span class="st">    | `val_loss` | Validation loss value |</span></span>
+<span id="cb8-90"><a></a><span class="st">    """</span></span>
+<span id="cb8-91"><a></a>    <span class="bu">print</span>(Markdown(text))</span>
+<span id="cb8-92"><a></a></span>
+<span id="cb8-93"><a></a></span>
+<span id="cb8-94"><a></a><span class="kw">def</span> format_pair(k: <span class="bu">str</span>, v: ScalarLike) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb8-95"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(v, (<span class="bu">int</span>, <span class="bu">bool</span>, np.integer)):</span>
+<span id="cb8-96"><a></a>        <span class="co"># return f'{k}={v:&lt;3}'</span></span>
+<span id="cb8-97"><a></a>        <span class="cf">return</span> <span class="ss">f'</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb8-98"><a></a>    <span class="co"># return f'{k}={v:&lt;3.4f}'</span></span>
+<span id="cb8-99"><a></a>    <span class="cf">return</span> <span class="ss">f'</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>v<span class="sc">:&lt;6.4f}</span><span class="ss">'</span></span>
+<span id="cb8-100"><a></a></span>
+<span id="cb8-101"><a></a></span>
+<span id="cb8-102"><a></a><span class="kw">def</span> summarize_dict(d: <span class="bu">dict</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb8-103"><a></a>    <span class="cf">return</span> <span class="st">' '</span>.join([format_pair(k, v) <span class="cf">for</span> k, v <span class="kw">in</span> d.items()])</span>
+<span id="cb8-104"><a></a></span>
+<span id="cb8-105"><a></a></span>
+<span id="cb8-106"><a></a><span class="kw">def</span> grab_tensor(x: Any) <span class="op">-&gt;</span> np.ndarray <span class="op">|</span> ScalarLike <span class="op">|</span> <span class="va">None</span>:</span>
+<span id="cb8-107"><a></a>    <span class="cf">if</span> x <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-108"><a></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb8-109"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(x, (<span class="bu">int</span>, <span class="bu">float</span>, <span class="bu">bool</span>, np.floating)):</span>
+<span id="cb8-110"><a></a>        <span class="cf">return</span> x</span>
+<span id="cb8-111"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(x, <span class="bu">list</span>):</span>
+<span id="cb8-112"><a></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(x[<span class="dv">0</span>], torch.Tensor):</span>
+<span id="cb8-113"><a></a>            <span class="cf">return</span> grab_tensor(torch.stack(x))</span>
+<span id="cb8-114"><a></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(x[<span class="dv">0</span>], np.ndarray):</span>
+<span id="cb8-115"><a></a>            <span class="cf">return</span> np.stack(x)</span>
+<span id="cb8-116"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-117"><a></a>            <span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb8-118"><a></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(x[<span class="dv">0</span>], tf.Tensor):</span>
+<span id="cb8-119"><a></a>                <span class="cf">return</span> grab_tensor(tf.stack(x))</span>
+<span id="cb8-120"><a></a>    <span class="cf">elif</span> <span class="bu">isinstance</span>(x, np.ndarray):</span>
+<span id="cb8-121"><a></a>        <span class="cf">return</span> x</span>
+<span id="cb8-122"><a></a>    <span class="cf">elif</span> <span class="bu">isinstance</span>(x, torch.Tensor):</span>
+<span id="cb8-123"><a></a>        <span class="cf">return</span> x.detach().cpu().numpy()</span>
+<span id="cb8-124"><a></a>    <span class="cf">elif</span> <span class="bu">callable</span>(<span class="bu">getattr</span>(x, <span class="st">'numpy'</span>, <span class="va">None</span>)):</span>
+<span id="cb8-125"><a></a>        <span class="cf">assert</span> <span class="bu">callable</span>(<span class="bu">getattr</span>(x, <span class="st">'numpy'</span>))</span>
+<span id="cb8-126"><a></a>        <span class="cf">return</span> x.numpy()</span>
+<span id="cb8-127"><a></a>    <span class="cf">raise</span> <span class="pp">ValueError</span></span>
+<span id="cb8-128"><a></a></span>
+<span id="cb8-129"><a></a></span>
+<span id="cb8-130"><a></a><span class="kw">def</span> _average(val):</span>
+<span id="cb8-131"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(val, (<span class="bu">list</span>, <span class="bu">tuple</span>)):</span>
+<span id="cb8-132"><a></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(val[<span class="dv">0</span>], torch.Tensor):</span>
+<span id="cb8-133"><a></a>            val <span class="op">=</span> grab_tensor(torch.stack(val))</span>
+<span id="cb8-134"><a></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(val, np.ndarray):</span>
+<span id="cb8-135"><a></a>            val <span class="op">=</span> np.stack(val)</span>
+<span id="cb8-136"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-137"><a></a>            val <span class="op">=</span> val</span>
+<span id="cb8-138"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(val, torch.Tensor):</span>
+<span id="cb8-139"><a></a>        val <span class="op">=</span> grab_tensor(val)</span>
+<span id="cb8-140"><a></a></span>
+<span id="cb8-141"><a></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(val, (<span class="bu">float</span>, <span class="bu">int</span>, <span class="bu">bool</span>, np.floating, np.integer)):</span>
+<span id="cb8-142"><a></a>        <span class="cf">return</span> val</span>
+<span id="cb8-143"><a></a>    <span class="cf">try</span>:</span>
+<span id="cb8-144"><a></a>        avg <span class="op">=</span> np.mean(val).real  <span class="co"># type: ignore</span></span>
+<span id="cb8-145"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(avg, np.floating)</span>
+<span id="cb8-146"><a></a>        <span class="cf">return</span> avg</span>
+<span id="cb8-147"><a></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb8-148"><a></a>        log.exception(<span class="ss">f'Failed to average </span><span class="sc">{</span>val<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-149"><a></a>        log.warning(<span class="st">'Returning val as is'</span>)</span>
+<span id="cb8-150"><a></a>        <span class="cf">return</span> val</span>
+<span id="cb8-151"><a></a></span>
+<span id="cb8-152"><a></a></span>
+<span id="cb8-153"><a></a><span class="kw">def</span> average_dict(d: <span class="bu">dict</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb8-154"><a></a>    avgs <span class="op">=</span> {}</span>
+<span id="cb8-155"><a></a>    avg <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb8-156"><a></a>    <span class="cf">for</span> key, val <span class="kw">in</span> d.items():</span>
+<span id="cb8-157"><a></a>        <span class="cf">if</span> val <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-158"><a></a>            <span class="cf">continue</span></span>
+<span id="cb8-159"><a></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(val, <span class="bu">dict</span>):</span>
+<span id="cb8-160"><a></a>            <span class="cf">for</span> k, v <span class="kw">in</span> val.items():</span>
+<span id="cb8-161"><a></a>                kk <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb8-162"><a></a>                avg <span class="op">=</span> _average(v)</span>
+<span id="cb8-163"><a></a>                avgs[kk] <span class="op">=</span> avg</span>
+<span id="cb8-164"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-165"><a></a>            avg <span class="op">=</span> _average(val)</span>
+<span id="cb8-166"><a></a>            avgs[key] <span class="op">=</span> avg</span>
+<span id="cb8-167"><a></a>    <span class="cf">return</span> avgs</span>
+<span id="cb8-168"><a></a></span>
+<span id="cb8-169"><a></a></span>
+<span id="cb8-170"><a></a><span class="kw">def</span> GPT_from_pretrained(</span>
+<span id="cb8-171"><a></a>        init_from: <span class="bu">str</span>,</span>
+<span id="cb8-172"><a></a>        dropout: Optional[<span class="bu">float</span>] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb8-173"><a></a>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[GPTModelConfig, GPT]:</span>
+<span id="cb8-174"><a></a>    log.info(</span>
+<span id="cb8-175"><a></a>        <span class="st">'Initializing from OpenAI GPT-2 Weights: '</span></span>
+<span id="cb8-176"><a></a>        <span class="ss">f'</span><span class="sc">{</span>init_from<span class="op">=</span><span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb8-177"><a></a>    )</span>
+<span id="cb8-178"><a></a>    override_args <span class="op">=</span> {<span class="st">'dropout'</span>: dropout}</span>
+<span id="cb8-179"><a></a>    model <span class="op">=</span> GPT.from_pretrained(</span>
+<span id="cb8-180"><a></a>        init_from,</span>
+<span id="cb8-181"><a></a>        override_args</span>
+<span id="cb8-182"><a></a>    )</span>
+<span id="cb8-183"><a></a>    model_cfg <span class="op">=</span> {</span>
+<span id="cb8-184"><a></a>        k: <span class="bu">getattr</span>(model.config, k) <span class="cf">for</span> k <span class="kw">in</span> [</span>
+<span id="cb8-185"><a></a>            <span class="st">'n_layer'</span>,</span>
+<span id="cb8-186"><a></a>            <span class="st">'n_head'</span>,</span>
+<span id="cb8-187"><a></a>            <span class="st">'n_embd'</span>,</span>
+<span id="cb8-188"><a></a>            <span class="st">'block_size'</span>,</span>
+<span id="cb8-189"><a></a>            <span class="st">'bias'</span>,</span>
+<span id="cb8-190"><a></a>            <span class="st">'vocab_size'</span></span>
+<span id="cb8-191"><a></a>        ]</span>
+<span id="cb8-192"><a></a>    }</span>
+<span id="cb8-193"><a></a>    <span class="cf">return</span> (model, GPTModelConfig(<span class="op">**</span>model_cfg))</span>
+<span id="cb8-194"><a></a></span>
+<span id="cb8-195"><a></a></span>
+<span id="cb8-196"><a></a><span class="co"># def setup_deepspeed(</span></span>
+<span id="cb8-197"><a></a><span class="co">#             model: Optional[torch.nn.Module | GPT],</span></span>
+<span id="cb8-198"><a></a><span class="co">#             micro_batch_size: Optional[int] = None,</span></span>
+<span id="cb8-199"><a></a><span class="co">#             ds_config: Optional[dict] = None,</span></span>
+<span id="cb8-200"><a></a><span class="co">#             ds_config_path: Optional[os.PathLike] = None,</span></span>
+<span id="cb8-201"><a></a><span class="co">#             optimizer: Optional[torch.optim.Optimizer] = None,</span></span>
+<span id="cb8-202"><a></a><span class="co"># ) -&gt; dict:</span></span>
+<span id="cb8-203"><a></a><span class="co">#     import deepspeed</span></span>
+<span id="cb8-204"><a></a><span class="co">#     from ezpz import load_ds_config</span></span>
+<span id="cb8-205"><a></a><span class="co">#     if ds_config is None:</span></span>
+<span id="cb8-206"><a></a><span class="co">#         assert ds_config_path is not None, (</span></span>
+<span id="cb8-207"><a></a><span class="co">#             'One of `ds_config` or `ds_config_path` must be specified.'</span></span>
+<span id="cb8-208"><a></a><span class="co">#         )</span></span>
+<span id="cb8-209"><a></a><span class="co">#         ds_config = load_ds_config(Path(ds_config_path).as_posix())</span></span>
+<span id="cb8-210"><a></a><span class="co">#     assert ds_config is not None</span></span>
+<span id="cb8-211"><a></a><span class="co">#     if self.config.train.wandb_project is not None:</span></span>
+<span id="cb8-212"><a></a><span class="co">#         ds_config['wandb'].update({</span></span>
+<span id="cb8-213"><a></a><span class="co">#             'enabled': True,</span></span>
+<span id="cb8-214"><a></a><span class="co">#             'project': self.config.train.wandb_project,</span></span>
+<span id="cb8-215"><a></a><span class="co">#         })</span></span>
+<span id="cb8-216"><a></a><span class="co">#     # log.warning(</span></span>
+<span id="cb8-217"><a></a><span class="co">#     #     f'Setting `train_micro_batch_size_per_gpu` to '</span></span>
+<span id="cb8-218"><a></a><span class="co">#     #     f'{self.config.model.batch_size=}'</span></span>
+<span id="cb8-219"><a></a><span class="co">#     # )</span></span>
+<span id="cb8-220"><a></a><span class="co">#     if micro_batch_size is not None:</span></span>
+<span id="cb8-221"><a></a><span class="co">#         ds_config.update({</span></span>
+<span id="cb8-222"><a></a><span class="co">#             'train_micro_batch_size_per_gpu': micro_batch_size</span></span>
+<span id="cb8-223"><a></a><span class="co">#         })</span></span>
+<span id="cb8-224"><a></a><span class="co">#     assert (</span></span>
+<span id="cb8-225"><a></a><span class="co">#         model is not None and (</span></span>
+<span id="cb8-226"><a></a><span class="co">#             # isinstance(model, (torch.nn.Module, GPT))</span></span>
+<span id="cb8-227"><a></a><span class="co">#             issubclass(model, torch.nn.Module)</span></span>
+<span id="cb8-228"><a></a><span class="co">#         )</span></span>
+<span id="cb8-229"><a></a><span class="co">#     )</span></span>
+<span id="cb8-230"><a></a><span class="co">#     # assert model is not None</span></span>
+<span id="cb8-231"><a></a><span class="co">#     if (</span></span>
+<span id="cb8-232"><a></a><span class="co">#             optimizer is not None</span></span>
+<span id="cb8-233"><a></a><span class="co">#             and isinstance(optimizer, torch.optim.Optimizer)</span></span>
+<span id="cb8-234"><a></a><span class="co">#     ):</span></span>
+<span id="cb8-235"><a></a><span class="co">#         engine, optimizer, *_ = deepspeed.initialize(</span></span>
+<span id="cb8-236"><a></a><span class="co">#             model=model,</span></span>
+<span id="cb8-237"><a></a><span class="co">#             config=ds_config,</span></span>
+<span id="cb8-238"><a></a><span class="co">#             optimizer=optimizer,</span></span>
+<span id="cb8-239"><a></a><span class="co">#         )</span></span>
+<span id="cb8-240"><a></a><span class="co">#     elif 'optimizer' in ds_config.keys():</span></span>
+<span id="cb8-241"><a></a><span class="co">#         engine, optimizer, *_ = deepspeed.initialize(</span></span>
+<span id="cb8-242"><a></a><span class="co">#             model=model,</span></span>
+<span id="cb8-243"><a></a><span class="co">#             config=ds_config,</span></span>
+<span id="cb8-244"><a></a><span class="co">#             model_parameters=model.parameters()</span></span>
+<span id="cb8-245"><a></a><span class="co">#         )</span></span>
+<span id="cb8-246"><a></a><span class="co">#     else:</span></span>
+<span id="cb8-247"><a></a><span class="co">#         raise ValueError('Unable to initialize DeepSpeed')</span></span>
+<span id="cb8-248"><a></a><span class="co">#     assert engine is not None and optimizer is not None</span></span>
+<span id="cb8-249"><a></a><span class="co">#     return {</span></span>
+<span id="cb8-250"><a></a><span class="co">#         'model_engine': engine,</span></span>
+<span id="cb8-251"><a></a><span class="co">#         'optimizer': optimizer,</span></span>
+<span id="cb8-252"><a></a><span class="co">#         'ds_config': ds_config,</span></span>
+<span id="cb8-253"><a></a><span class="co">#     }</span></span>
+<span id="cb8-254"><a></a></span>
+<span id="cb8-255"><a></a></span>
+<span id="cb8-256"><a></a><span class="kw">class</span> Trainer:</span>
+<span id="cb8-257"><a></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, config: ExperimentConfig, device: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb8-258"><a></a>        <span class="co"># self.console = get_console()</span></span>
+<span id="cb8-259"><a></a>        <span class="va">self</span>.config <span class="op">=</span> config</span>
+<span id="cb8-260"><a></a>        <span class="va">self</span>.ckpt <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb8-261"><a></a>        <span class="va">self</span>.rank <span class="op">=</span> RANK</span>
+<span id="cb8-262"><a></a>        <span class="va">self</span>.world_size <span class="op">=</span> WORLD_SIZE</span>
+<span id="cb8-263"><a></a>        <span class="va">self</span>.device <span class="op">=</span> device <span class="cf">if</span> device <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> DEVICE</span>
+<span id="cb8-264"><a></a>        <span class="co"># assert self.device == self.config.device_type</span></span>
+<span id="cb8-265"><a></a>        <span class="co"># </span><span class="al">NOTE</span><span class="co">: ---------------------------------------------------------</span></span>
+<span id="cb8-266"><a></a>        <span class="co"># config.optimizer.gas = (</span></span>
+<span id="cb8-267"><a></a>        <span class="co">#     1 if config.optimizer.gradient_accumulation_steps is None</span></span>
+<span id="cb8-268"><a></a>        <span class="co">#     else config.optimizer.gradient_accumulation_steps</span></span>
+<span id="cb8-269"><a></a>        <span class="co"># ) -------------------------------------------------------------</span></span>
+<span id="cb8-270"><a></a>        <span class="va">self</span>.train_history <span class="op">=</span> BaseHistory()</span>
+<span id="cb8-271"><a></a>        <span class="va">self</span>._gas <span class="op">=</span> <span class="va">self</span>.config.optimizer.gas</span>
+<span id="cb8-272"><a></a>        <span class="va">self</span>._lr <span class="op">=</span> <span class="va">self</span>.config.optimizer.learning_rate</span>
+<span id="cb8-273"><a></a>        <span class="va">self</span>._min_lr <span class="op">=</span> <span class="va">self</span>.config.optimizer.min_lr</span>
+<span id="cb8-274"><a></a>        <span class="va">self</span>._diters <span class="op">=</span> <span class="va">self</span>.config.optimizer.lr_decay_iters</span>
+<span id="cb8-275"><a></a>        <span class="va">self</span>._witers <span class="op">=</span> <span class="va">self</span>.config.train.warmup_iters</span>
+<span id="cb8-276"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.init_from <span class="op">==</span> <span class="st">'scratch'</span>:</span>
+<span id="cb8-277"><a></a>            log.info(<span class="st">'Initializing a new model from scratch'</span>)</span>
+<span id="cb8-278"><a></a>            model <span class="op">=</span> GPT(<span class="va">self</span>.config.model)</span>
+<span id="cb8-279"><a></a>        <span class="cf">elif</span> <span class="va">self</span>.config.train.init_from <span class="op">==</span> <span class="st">'resume'</span>:</span>
+<span id="cb8-280"><a></a>            model, ckpt <span class="op">=</span> <span class="va">self</span>.restore_from_ckpt()</span>
+<span id="cb8-281"><a></a>            <span class="va">self</span>.ckpt <span class="op">=</span> ckpt</span>
+<span id="cb8-282"><a></a>            <span class="va">self</span>.config.set_iter_num(ckpt.get(<span class="st">'iter_num'</span>, <span class="dv">1</span>))</span>
+<span id="cb8-283"><a></a>            <span class="va">self</span>.config.set_best_val_loss(ckpt.get(<span class="st">'best_val_loss'</span>, <span class="fl">1e9</span>))</span>
+<span id="cb8-284"><a></a>        <span class="cf">elif</span> <span class="va">self</span>.config.train.init_from.startswith(<span class="st">'gpt2'</span>):</span>
+<span id="cb8-285"><a></a>            model <span class="op">=</span> <span class="va">self</span>._init_gpt2()</span>
+<span id="cb8-286"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-287"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(</span>
+<span id="cb8-288"><a></a>                <span class="ss">f'Unexpected `init_from` = </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>config<span class="sc">.</span>train<span class="sc">.</span>init_from<span class="sc">}</span><span class="ss">. '</span></span>
+<span id="cb8-289"><a></a>                <span class="st">'Exiting!'</span></span>
+<span id="cb8-290"><a></a>            )</span>
+<span id="cb8-291"><a></a>        <span class="co"># model = model</span></span>
+<span id="cb8-292"><a></a>        <span class="co"># if torch.cuda.is_available():</span></span>
+<span id="cb8-293"><a></a>        <span class="co">#     model.cuda()</span></span>
+<span id="cb8-294"><a></a>        model.to(<span class="va">self</span>.device)</span>
+<span id="cb8-295"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(model, GPT)</span>
+<span id="cb8-296"><a></a>        <span class="cf">assert</span> <span class="bu">issubclass</span>(GPT, torch.nn.Module)</span>
+<span id="cb8-297"><a></a>        num_params <span class="op">=</span> model.get_num_params()</span>
+<span id="cb8-298"><a></a>        <span class="cf">if</span> wandb.run <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-299"><a></a>            wandb.watch(model)</span>
+<span id="cb8-300"><a></a>            wandb.run.config[<span class="st">'num_params'</span>] <span class="op">=</span> num_params</span>
+<span id="cb8-301"><a></a>        <span class="co"># model_block_size = int(self.model.config.block_size)</span></span>
+<span id="cb8-302"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.model.block_size <span class="op">&lt;</span> model.config.block_size:</span>
+<span id="cb8-303"><a></a>            model.crop_block_size(<span class="va">self</span>.config.model.block_size)</span>
+<span id="cb8-304"><a></a>            <span class="va">self</span>.config.model.set_block_size(<span class="va">self</span>.config.model.block_size)</span>
+<span id="cb8-305"><a></a>        optimizer <span class="op">=</span> model.configure_optimizers(</span>
+<span id="cb8-306"><a></a>            weight_decay<span class="op">=</span><span class="va">self</span>.config.optimizer.weight_decay,</span>
+<span id="cb8-307"><a></a>            learning_rate<span class="op">=</span><span class="va">self</span>.config.optimizer.learning_rate,</span>
+<span id="cb8-308"><a></a>            betas<span class="op">=</span>(</span>
+<span id="cb8-309"><a></a>                <span class="va">self</span>.config.optimizer.beta1,</span>
+<span id="cb8-310"><a></a>                <span class="va">self</span>.config.optimizer.beta2,</span>
+<span id="cb8-311"><a></a>            ),</span>
+<span id="cb8-312"><a></a>            device_type<span class="op">=</span><span class="va">self</span>.config.device_type,</span>
+<span id="cb8-313"><a></a>        )</span>
+<span id="cb8-314"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.init_from <span class="op">==</span> <span class="st">'resume'</span>:</span>
+<span id="cb8-315"><a></a>            <span class="cf">assert</span> (</span>
+<span id="cb8-316"><a></a>                <span class="va">self</span>.ckpt <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-317"><a></a>                <span class="kw">and</span> <span class="bu">isinstance</span>(<span class="va">self</span>.ckpt, <span class="bu">dict</span>)</span>
+<span id="cb8-318"><a></a>                <span class="kw">and</span> <span class="st">'optimizer'</span> <span class="kw">in</span> <span class="va">self</span>.ckpt</span>
+<span id="cb8-319"><a></a>            )</span>
+<span id="cb8-320"><a></a>            optimizer.load_state_dict(<span class="va">self</span>.ckpt[<span class="st">'optimizer'</span>])</span>
+<span id="cb8-321"><a></a>            <span class="va">self</span>.ckpt <span class="op">=</span> <span class="va">None</span>  <span class="co"># free up memory</span></span>
+<span id="cb8-322"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.<span class="bu">compile</span>:</span>
+<span id="cb8-323"><a></a>            <span class="co"># unoptimized_model = self.model</span></span>
+<span id="cb8-324"><a></a>            model <span class="op">=</span> torch.<span class="bu">compile</span>(model)  <span class="co"># type:ignore</span></span>
+<span id="cb8-325"><a></a>        <span class="co"># if WORLD_SIZE &gt; 1:</span></span>
+<span id="cb8-326"><a></a>        grad_scaler <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb8-327"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="op">==</span> <span class="st">'ddp'</span>:</span>
+<span id="cb8-328"><a></a>            <span class="cf">if</span> torch.cuda.is_available():</span>
+<span id="cb8-329"><a></a>                <span class="im">from</span> torch.cuda.amp.grad_scaler <span class="im">import</span> GradScaler</span>
+<span id="cb8-330"><a></a>                grad_scaler <span class="op">=</span> GradScaler(</span>
+<span id="cb8-331"><a></a>                    enabled<span class="op">=</span>(<span class="va">self</span>.config.train.dtype <span class="op">==</span> <span class="st">'float16'</span>)</span>
+<span id="cb8-332"><a></a>                )</span>
+<span id="cb8-333"><a></a>            <span class="co"># self.optimizer = optimizer</span></span>
+<span id="cb8-334"><a></a>            <span class="cf">assert</span> <span class="bu">isinstance</span>(model, torch.nn.Module)</span>
+<span id="cb8-335"><a></a>            <span class="co"># device = get_torch_device()</span></span>
+<span id="cb8-336"><a></a>            local_rank <span class="op">=</span> get_local_rank()</span>
+<span id="cb8-337"><a></a>            devid <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>device<span class="sc">}</span><span class="ss">:</span><span class="sc">{</span>local_rank<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb8-338"><a></a>            log.critical(<span class="ss">f'"</span><span class="sc">{</span>devid<span class="op">=</span><span class="sc">}</span><span class="ss">"'</span>)</span>
+<span id="cb8-339"><a></a>            model.to(devid)</span>
+<span id="cb8-340"><a></a>            <span class="cf">if</span> WORLD_SIZE <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb8-341"><a></a>                model_engine <span class="op">=</span> DDP(model, device_ids<span class="op">=</span>[devid])</span>
+<span id="cb8-342"><a></a>            <span class="cf">else</span>:</span>
+<span id="cb8-343"><a></a>                model_engine <span class="op">=</span> model</span>
+<span id="cb8-344"><a></a>        <span class="cf">elif</span> <span class="va">self</span>.config.train.backend.lower() <span class="kw">in</span> [<span class="st">'deepspeed'</span>, <span class="st">'ds'</span>]:</span>
+<span id="cb8-345"><a></a>            <span class="im">from</span> ezpz <span class="im">import</span> load_ds_config</span>
+<span id="cb8-346"><a></a>            grad_scaler <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb8-347"><a></a>            ds_config_path <span class="op">=</span> <span class="va">self</span>.config.train.ds_config_path</span>
+<span id="cb8-348"><a></a>            <span class="cf">if</span> ds_config_path <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-349"><a></a>                <span class="im">from</span> wordplay.configs <span class="im">import</span> DS_CONFIG_PATH</span>
+<span id="cb8-350"><a></a>                ds_config_path <span class="op">=</span> DS_CONFIG_PATH</span>
+<span id="cb8-351"><a></a>            <span class="va">self</span>.ds_config <span class="op">=</span> load_ds_config(ds_config_path)</span>
+<span id="cb8-352"><a></a>            <span class="cf">if</span> <span class="st">'optimizer'</span> <span class="kw">in</span> <span class="va">self</span>.ds_config.keys():</span>
+<span id="cb8-353"><a></a>                optimizer <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb8-354"><a></a>            <span class="cf">assert</span> <span class="bu">isinstance</span>(model, torch.nn.Module)</span>
+<span id="cb8-355"><a></a>            ds_out <span class="op">=</span> <span class="va">self</span>._setup_deepspeed(</span>
+<span id="cb8-356"><a></a>                ds_config<span class="op">=</span><span class="va">self</span>.ds_config,</span>
+<span id="cb8-357"><a></a>                model<span class="op">=</span>model,</span>
+<span id="cb8-358"><a></a>                optimizer<span class="op">=</span>optimizer</span>
+<span id="cb8-359"><a></a>            )</span>
+<span id="cb8-360"><a></a>            model_engine <span class="op">=</span> ds_out[<span class="st">'model_engine'</span>]</span>
+<span id="cb8-361"><a></a>            optimizer <span class="op">=</span> ds_out[<span class="st">'optimizer'</span>]</span>
+<span id="cb8-362"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-363"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f'Unexpected </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>config<span class="sc">.</span>train<span class="sc">.</span>backend<span class="op">=</span><span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-364"><a></a>        <span class="va">self</span>.model <span class="op">=</span> model</span>
+<span id="cb8-365"><a></a>        <span class="va">self</span>.grad_scaler <span class="op">=</span> grad_scaler</span>
+<span id="cb8-366"><a></a>        <span class="va">self</span>.model_engine <span class="op">=</span> model_engine</span>
+<span id="cb8-367"><a></a>        <span class="va">self</span>.optimizer <span class="op">=</span> optimizer</span>
+<span id="cb8-368"><a></a></span>
+<span id="cb8-369"><a></a>    <span class="kw">def</span> _init_gpt2(<span class="va">self</span>) <span class="op">-&gt;</span> GPT:</span>
+<span id="cb8-370"><a></a>        log.info(</span>
+<span id="cb8-371"><a></a>            <span class="ss">f'Initializing from OpenAI GPT-2 Weights: '</span></span>
+<span id="cb8-372"><a></a>            <span class="ss">f'</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>config<span class="sc">.</span>train<span class="sc">.</span>init_from<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb8-373"><a></a>        )</span>
+<span id="cb8-374"><a></a>        model_cfg, model <span class="op">=</span> GPT_from_pretrained(</span>
+<span id="cb8-375"><a></a>            <span class="va">self</span>.config.train.init_from,</span>
+<span id="cb8-376"><a></a>            <span class="va">self</span>.config.model.dropout</span>
+<span id="cb8-377"><a></a>        )</span>
+<span id="cb8-378"><a></a>        <span class="va">self</span>.config.reset_model_config(model_cfg)</span>
+<span id="cb8-379"><a></a>        <span class="cf">return</span> model</span>
+<span id="cb8-380"><a></a></span>
+<span id="cb8-381"><a></a>    <span class="kw">def</span> _setup_deepspeed(</span>
+<span id="cb8-382"><a></a>            <span class="va">self</span>,</span>
+<span id="cb8-383"><a></a>            model: Optional[torch.nn.Module <span class="op">|</span> GPT],</span>
+<span id="cb8-384"><a></a>            ds_config: Optional[<span class="bu">dict</span>] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb8-385"><a></a>            ds_config_path: Optional[os.PathLike] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb8-386"><a></a>            optimizer: Optional[torch.optim.Optimizer] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb8-387"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb8-388"><a></a>        <span class="co">"""Setup DeepSpeed.</span></span>
+<span id="cb8-389"><a></a></span>
+<span id="cb8-390"><a></a><span class="co">        </span><span class="al">TODO</span><span class="co">:</span></span>
+<span id="cb8-391"><a></a><span class="co">            - [ ] Deal with / fix gradient accumulation logic in `train_step`</span></span>
+<span id="cb8-392"><a></a><span class="co">            - [ ] Test / generalize optimizer creation</span></span>
+<span id="cb8-393"><a></a><span class="co">        """</span></span>
+<span id="cb8-394"><a></a>        <span class="im">import</span> deepspeed</span>
+<span id="cb8-395"><a></a>        <span class="im">from</span> ezpz <span class="im">import</span> load_ds_config</span>
+<span id="cb8-396"><a></a>        <span class="cf">if</span> ds_config <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb8-397"><a></a>            <span class="cf">assert</span> ds_config_path <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>, (</span>
+<span id="cb8-398"><a></a>                <span class="st">'One of `ds_config` or `ds_config_path` must be specified.'</span></span>
+<span id="cb8-399"><a></a>            )</span>
+<span id="cb8-400"><a></a>            ds_config <span class="op">=</span> load_ds_config(Path(ds_config_path).as_posix())</span>
+<span id="cb8-401"><a></a>        <span class="cf">assert</span> ds_config <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-402"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.wandb_project <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-403"><a></a>            ds_config[<span class="st">'wandb'</span>].update({</span>
+<span id="cb8-404"><a></a>                <span class="st">'enabled'</span>: <span class="va">True</span>,</span>
+<span id="cb8-405"><a></a>                <span class="st">'project'</span>: <span class="va">self</span>.config.train.wandb_project,</span>
+<span id="cb8-406"><a></a>            })</span>
+<span id="cb8-407"><a></a>        log.warning(</span>
+<span id="cb8-408"><a></a>            <span class="ss">f'Setting `train_micro_batch_size_per_gpu` to '</span></span>
+<span id="cb8-409"><a></a>            <span class="ss">f'</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>config<span class="sc">.</span>model<span class="sc">.</span>batch_size<span class="op">=</span><span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb8-410"><a></a>        )</span>
+<span id="cb8-411"><a></a>        ds_config.update({</span>
+<span id="cb8-412"><a></a>            <span class="st">'train_micro_batch_size_per_gpu'</span>: <span class="va">self</span>.config.model.batch_size</span>
+<span id="cb8-413"><a></a>        })</span>
+<span id="cb8-414"><a></a>        ds_config <span class="op">|=</span> {<span class="st">'steps_per_print'</span>: <span class="va">self</span>.config.train.log_interval}</span>
+<span id="cb8-415"><a></a>        <span class="cf">assert</span> (</span>
+<span id="cb8-416"><a></a>            model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> (</span>
+<span id="cb8-417"><a></a>                <span class="bu">isinstance</span>(model, (torch.nn.Module, GPT))</span>
+<span id="cb8-418"><a></a>                <span class="kw">or</span> <span class="bu">issubclass</span>(model, torch.nn.Module)</span>
+<span id="cb8-419"><a></a>            )</span>
+<span id="cb8-420"><a></a>        )</span>
+<span id="cb8-421"><a></a>        <span class="cf">assert</span> model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-422"><a></a>        <span class="cf">if</span> (</span>
+<span id="cb8-423"><a></a>                optimizer <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-424"><a></a>                <span class="kw">and</span> <span class="bu">isinstance</span>(optimizer, torch.optim.Optimizer)</span>
+<span id="cb8-425"><a></a>        ):</span>
+<span id="cb8-426"><a></a>            engine, optimizer, <span class="op">*</span>_ <span class="op">=</span> deepspeed.initialize(</span>
+<span id="cb8-427"><a></a>                model<span class="op">=</span>model,</span>
+<span id="cb8-428"><a></a>                config<span class="op">=</span>ds_config,</span>
+<span id="cb8-429"><a></a>                optimizer<span class="op">=</span>optimizer,</span>
+<span id="cb8-430"><a></a>            )</span>
+<span id="cb8-431"><a></a>        <span class="cf">elif</span> <span class="st">'optimizer'</span> <span class="kw">in</span> ds_config.keys():</span>
+<span id="cb8-432"><a></a>            engine, optimizer, <span class="op">*</span>_ <span class="op">=</span> deepspeed.initialize(</span>
+<span id="cb8-433"><a></a>                model<span class="op">=</span>model,</span>
+<span id="cb8-434"><a></a>                config<span class="op">=</span>ds_config,</span>
+<span id="cb8-435"><a></a>                model_parameters<span class="op">=</span>model.parameters()</span>
+<span id="cb8-436"><a></a>            )</span>
+<span id="cb8-437"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-438"><a></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'Unable to initialize DeepSpeed'</span>)</span>
+<span id="cb8-439"><a></a>        <span class="cf">assert</span> engine <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> optimizer <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-440"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb8-441"><a></a>            <span class="st">'model_engine'</span>: engine,</span>
+<span id="cb8-442"><a></a>            <span class="st">'optimizer'</span>: optimizer,</span>
+<span id="cb8-443"><a></a>            <span class="st">'ds_config'</span>: ds_config,</span>
+<span id="cb8-444"><a></a>        }</span>
+<span id="cb8-445"><a></a></span>
+<span id="cb8-446"><a></a>    <span class="kw">def</span> get_batch(<span class="va">self</span>, split: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.Tensor, torch.Tensor]:</span>
 <span id="cb8-447"><a></a>        <span class="co"># data = self.config.train_data if split == 'train'</span></span>
 <span id="cb8-448"><a></a>        <span class="co"># else self.config.val_data</span></span>
 <span id="cb8-449"><a></a>        data <span class="op">=</span> <span class="va">self</span>.config.data.data.get(split, <span class="va">None</span>)</span>
@@ -1208,168 +1654,572 @@ Figure&nbsp;7: The simplest, fastest repository for training / finetuning GPT ba
 <span id="cb8-471"><a></a>        <span class="cf">else</span>:</span>
 <span id="cb8-472"><a></a>            x <span class="op">=</span> x.to(<span class="va">self</span>.config.device_type)</span>
 <span id="cb8-473"><a></a>            y <span class="op">=</span> y.to(<span class="va">self</span>.config.device_type)</span>
-<span id="cb8-474"><a></a>        <span class="cf">return</span> x, y</span></code></pre></div>
+<span id="cb8-474"><a></a>        <span class="cf">return</span> x, y</span>
+<span id="cb8-475"><a></a></span>
+<span id="cb8-476"><a></a>    <span class="kw">def</span> get_lr(<span class="va">self</span>, it: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb8-477"><a></a>        <span class="cf">if</span> it <span class="op">&lt;</span> <span class="va">self</span>._witers:</span>
+<span id="cb8-478"><a></a>            <span class="cf">return</span> <span class="va">self</span>._lr <span class="op">*</span> it <span class="op">/</span> <span class="va">self</span>._witers</span>
+<span id="cb8-479"><a></a>        <span class="cf">if</span> it <span class="op">&gt;</span> <span class="va">self</span>._diters:</span>
+<span id="cb8-480"><a></a>            <span class="cf">return</span> <span class="va">self</span>._min_lr</span>
+<span id="cb8-481"><a></a>        decay_ratio <span class="op">=</span> (it <span class="op">-</span> <span class="va">self</span>._witers) <span class="op">/</span> (<span class="va">self</span>._diters <span class="op">-</span> <span class="va">self</span>._witers)</span>
+<span id="cb8-482"><a></a>        <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> decay_ratio <span class="op">&lt;=</span> <span class="dv">1</span></span>
+<span id="cb8-483"><a></a>        coeff <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">+</span> math.cos(math.pi <span class="op">*</span> decay_ratio))</span>
+<span id="cb8-484"><a></a>        <span class="cf">return</span> <span class="va">self</span>._min_lr <span class="op">+</span> coeff <span class="op">*</span> (<span class="va">self</span>._lr <span class="op">-</span> <span class="va">self</span>._min_lr)</span>
+<span id="cb8-485"><a></a></span>
+<span id="cb8-486"><a></a>    <span class="at">@torch.no_grad</span>()</span>
+<span id="cb8-487"><a></a>    <span class="kw">def</span> estimate_loss(<span class="va">self</span>):</span>
+<span id="cb8-488"><a></a>        out <span class="op">=</span> {}</span>
+<span id="cb8-489"><a></a>        <span class="va">self</span>.model.<span class="bu">eval</span>()</span>
+<span id="cb8-490"><a></a>        <span class="cf">for</span> split <span class="kw">in</span> <span class="va">self</span>.config.data.data.keys():</span>
+<span id="cb8-491"><a></a>            losses <span class="op">=</span> torch.zeros(<span class="va">self</span>.config.train.eval_iters)</span>
+<span id="cb8-492"><a></a>            <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.config.train.eval_iters):</span>
+<span id="cb8-493"><a></a>                x, y <span class="op">=</span> <span class="va">self</span>.get_batch(split)</span>
+<span id="cb8-494"><a></a>                <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
+<span id="cb8-495"><a></a>                    _, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
+<span id="cb8-496"><a></a>                losses[k] <span class="op">=</span> loss.item()</span>
+<span id="cb8-497"><a></a>            out[split] <span class="op">=</span> losses.mean()</span>
+<span id="cb8-498"><a></a>        <span class="va">self</span>.model.train()</span>
+<span id="cb8-499"><a></a>        <span class="cf">return</span> out</span>
+<span id="cb8-500"><a></a></span>
+<span id="cb8-501"><a></a>    <span class="kw">def</span> restore_from_ckpt(</span>
+<span id="cb8-502"><a></a>            <span class="va">self</span>,</span>
+<span id="cb8-503"><a></a>            ckpt_dir: Optional[<span class="bu">str</span> <span class="op">|</span> PathLike] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb8-504"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.nn.Module, <span class="bu">dict</span>]:</span>
+<span id="cb8-505"><a></a>        log.info(<span class="ss">f'Resuming training from </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>config<span class="sc">.</span>data<span class="sc">.</span>out_dir<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-506"><a></a>        ckpt_dir <span class="op">=</span> (</span>
+<span id="cb8-507"><a></a>            <span class="bu">str</span>(<span class="va">self</span>.config.data.out_dir) <span class="cf">if</span> ckpt_dir <span class="kw">is</span> <span class="va">None</span></span>
+<span id="cb8-508"><a></a>            <span class="cf">else</span> ckpt_dir</span>
+<span id="cb8-509"><a></a>        )</span>
+<span id="cb8-510"><a></a>        <span class="cf">assert</span> ckpt_dir <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-511"><a></a>        ckpt_path <span class="op">=</span> Path(ckpt_dir).joinpath(<span class="st">'ckpt.pt'</span>)</span>
+<span id="cb8-512"><a></a>        checkpoint <span class="op">=</span> torch.load(</span>
+<span id="cb8-513"><a></a>            ckpt_path,</span>
+<span id="cb8-514"><a></a>            map_location<span class="op">=</span><span class="va">self</span>.config.train.device</span>
+<span id="cb8-515"><a></a>        )</span>
+<span id="cb8-516"><a></a>        ckpt_model <span class="op">=</span> checkpoint[<span class="st">'model_args'</span>]</span>
+<span id="cb8-517"><a></a>        model_config <span class="op">=</span> GPTModelConfig(</span>
+<span id="cb8-518"><a></a>            n_layer<span class="op">=</span>ckpt_model[<span class="st">'n_layer'</span>],</span>
+<span id="cb8-519"><a></a>            n_head<span class="op">=</span>ckpt_model[<span class="st">'n_head'</span>],</span>
+<span id="cb8-520"><a></a>            n_embd<span class="op">=</span>ckpt_model[<span class="st">'n_embd'</span>],</span>
+<span id="cb8-521"><a></a>            block_size<span class="op">=</span>ckpt_model[<span class="st">'block_size'</span>],</span>
+<span id="cb8-522"><a></a>            bias<span class="op">=</span>ckpt_model[<span class="st">'bias'</span>],</span>
+<span id="cb8-523"><a></a>            vocab_size<span class="op">=</span>ckpt_model[<span class="st">'vocab_size'</span>],</span>
+<span id="cb8-524"><a></a>        )</span>
+<span id="cb8-525"><a></a>        model <span class="op">=</span> GPT(model_config)</span>
+<span id="cb8-526"><a></a>        state_dict <span class="op">=</span> checkpoint[<span class="st">'model'</span>]</span>
+<span id="cb8-527"><a></a>        unwanted_prefix <span class="op">=</span> <span class="st">'_orig_mod.'</span></span>
+<span id="cb8-528"><a></a>        <span class="cf">for</span> k, _ <span class="kw">in</span> <span class="bu">list</span>(state_dict.items()):</span>
+<span id="cb8-529"><a></a>            <span class="cf">if</span> k.startswith(unwanted_prefix):</span>
+<span id="cb8-530"><a></a>                state_dict[k[<span class="bu">len</span>(unwanted_prefix):]] <span class="op">=</span> state_dict.pop(k)</span>
+<span id="cb8-531"><a></a>        model.load_state_dict(state_dict)</span>
+<span id="cb8-532"><a></a>        <span class="cf">return</span> model, checkpoint</span>
+<span id="cb8-533"><a></a></span>
+<span id="cb8-534"><a></a>    <span class="kw">def</span> _forward_step(<span class="va">self</span>, x: torch.Tensor, y: torch.Tensor) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb8-535"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb8-536"><a></a>        <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
+<span id="cb8-537"><a></a>            logits, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
+<span id="cb8-538"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb8-539"><a></a>            <span class="st">'logits'</span>: logits,</span>
+<span id="cb8-540"><a></a>            <span class="st">'loss'</span>: loss,</span>
+<span id="cb8-541"><a></a>            <span class="st">'dt'</span>: time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb8-542"><a></a>        }</span>
+<span id="cb8-543"><a></a></span>
+<span id="cb8-544"><a></a>    <span class="kw">def</span> _backward_step(</span>
+<span id="cb8-545"><a></a>            <span class="va">self</span>,</span>
+<span id="cb8-546"><a></a>            loss: torch.Tensor,</span>
+<span id="cb8-547"><a></a>            propagate_grads: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,</span>
+<span id="cb8-548"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb8-549"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb8-550"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="kw">in</span> [<span class="st">'ds'</span>, <span class="st">'deepspeed'</span>]:</span>
+<span id="cb8-551"><a></a>            <span class="va">self</span>.model_engine.backward(loss)  <span class="co"># type:ignore</span></span>
+<span id="cb8-552"><a></a>            <span class="va">self</span>.model_engine.step(loss)      <span class="co"># type:ignore</span></span>
+<span id="cb8-553"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-554"><a></a>            <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-555"><a></a>                <span class="va">self</span>.grad_scaler.scale(loss).backward()  <span class="co"># type:ignore</span></span>
+<span id="cb8-556"><a></a>            <span class="cf">if</span> propagate_grads:</span>
+<span id="cb8-557"><a></a>                <span class="cf">if</span> <span class="va">self</span>.config.optimizer.grad_clip <span class="op">!=</span> <span class="fl">0.0</span>:</span>
+<span id="cb8-558"><a></a>                    <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-559"><a></a>                        <span class="va">self</span>.grad_scaler.unscale_(<span class="va">self</span>.optimizer)</span>
+<span id="cb8-560"><a></a>                    torch.nn.utils.clip_grad_norm_(  <span class="co"># pyright: ignore</span></span>
+<span id="cb8-561"><a></a>                        <span class="va">self</span>.model_engine.parameters(),</span>
+<span id="cb8-562"><a></a>                        <span class="va">self</span>.config.optimizer.grad_clip</span>
+<span id="cb8-563"><a></a>                    )</span>
+<span id="cb8-564"><a></a>                <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-565"><a></a>                    <span class="va">self</span>.grad_scaler.step(<span class="va">self</span>.optimizer)</span>
+<span id="cb8-566"><a></a>                    <span class="va">self</span>.grad_scaler.update()</span>
+<span id="cb8-567"><a></a>                    <span class="va">self</span>.optimizer.zero_grad(set_to_none<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-568"><a></a></span>
+<span id="cb8-569"><a></a>        <span class="cf">return</span> time.perf_counter() <span class="op">-</span> t0</span>
+<span id="cb8-570"><a></a></span>
+<span id="cb8-571"><a></a>    <span class="kw">def</span> train_step(</span>
+<span id="cb8-572"><a></a>            <span class="va">self</span>,</span>
+<span id="cb8-573"><a></a>            x: torch.Tensor,</span>
+<span id="cb8-574"><a></a>            y: torch.Tensor,</span>
+<span id="cb8-575"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb8-576"><a></a>        lr <span class="op">=</span> (</span>
+<span id="cb8-577"><a></a>            <span class="va">self</span>.get_lr(<span class="va">self</span>.config.iter_num)</span>
+<span id="cb8-578"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.optimizer.decay_lr</span>
+<span id="cb8-579"><a></a>            <span class="cf">else</span> <span class="va">self</span>._lr</span>
+<span id="cb8-580"><a></a>        )</span>
+<span id="cb8-581"><a></a>        <span class="cf">for</span> param_group <span class="kw">in</span> <span class="va">self</span>.optimizer.param_groups:</span>
+<span id="cb8-582"><a></a>            param_group[<span class="st">'lr'</span>] <span class="op">=</span> lr</span>
+<span id="cb8-583"><a></a>        dtf <span class="op">=</span> []</span>
+<span id="cb8-584"><a></a>        dtb <span class="op">=</span> []</span>
+<span id="cb8-585"><a></a>        dt <span class="op">=</span> []</span>
+<span id="cb8-586"><a></a>        loss <span class="op">=</span> torch.tensor(<span class="fl">0.0</span>)</span>
+<span id="cb8-587"><a></a>        <span class="cf">for</span> micro_step <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>._gas):</span>
+<span id="cb8-588"><a></a>            is_last_micro_step <span class="op">=</span> (micro_step <span class="op">==</span> <span class="va">self</span>._gas <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb8-589"><a></a>            <span class="co"># </span><span class="al">NOTE</span><span class="co">: -----------------------------------------------------------</span></span>
+<span id="cb8-590"><a></a>            <span class="co"># In DDP training we only need to sync gradients at the last micro</span></span>
+<span id="cb8-591"><a></a>            <span class="co"># step. the official way to do this is with model.no_sync() context</span></span>
+<span id="cb8-592"><a></a>            <span class="co"># manager, but I really dislike that this bloats the code and</span></span>
+<span id="cb8-593"><a></a>            <span class="co"># forces us to repeat code looking at the source of that context</span></span>
+<span id="cb8-594"><a></a>            <span class="co"># manager, it just toggles this variable</span></span>
+<span id="cb8-595"><a></a>            <span class="co"># -----------------------------------------------------------------</span></span>
+<span id="cb8-596"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="op">==</span> <span class="st">'ddp'</span>:</span>
+<span id="cb8-597"><a></a>                _ <span class="op">=</span> (</span>
+<span id="cb8-598"><a></a>                    <span class="va">self</span>.model_engine.require_backward_grad_sync</span>
+<span id="cb8-599"><a></a>                    <span class="cf">if</span> (is_last_micro_step <span class="kw">and</span> <span class="va">self</span>.world_size <span class="op">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb8-600"><a></a>                    <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb8-601"><a></a>                )</span>
+<span id="cb8-602"><a></a>            fout <span class="op">=</span> <span class="va">self</span>._forward_step(x, y)</span>
+<span id="cb8-603"><a></a>            <span class="co"># immediately async prefetch next batch while model is doing the</span></span>
+<span id="cb8-604"><a></a>            <span class="co"># forward pass on the GPU</span></span>
+<span id="cb8-605"><a></a>            x, y <span class="op">=</span> <span class="va">self</span>.get_batch(<span class="st">'train'</span>)</span>
+<span id="cb8-606"><a></a>            loss <span class="op">=</span> fout[<span class="st">'loss'</span>] <span class="op">/</span> <span class="va">self</span>._gas</span>
+<span id="cb8-607"><a></a>            dtf.append(fout[<span class="st">'dt'</span>])</span>
+<span id="cb8-608"><a></a>            dtb_ <span class="op">=</span> <span class="va">self</span>._backward_step(</span>
+<span id="cb8-609"><a></a>                loss,</span>
+<span id="cb8-610"><a></a>                propagate_grads<span class="op">=</span>is_last_micro_step</span>
+<span id="cb8-611"><a></a>            )</span>
+<span id="cb8-612"><a></a>            dtb.append(dtb_)</span>
+<span id="cb8-613"><a></a>            dt.append(dtf <span class="op">+</span> dtb)</span>
+<span id="cb8-614"><a></a>        timers <span class="op">=</span> {</span>
+<span id="cb8-615"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb8-616"><a></a>            <span class="st">'dt'</span>: np.array(dt),</span>
+<span id="cb8-617"><a></a>            <span class="st">'dt_tot'</span>: np.<span class="bu">sum</span>(dt),</span>
+<span id="cb8-618"><a></a>            <span class="st">'dt_avg'</span>: np.mean(dt),</span>
+<span id="cb8-619"><a></a>            <span class="st">'dtf'</span>: np.array(dtf),</span>
+<span id="cb8-620"><a></a>            <span class="st">'dtf_tot'</span>: np.<span class="bu">sum</span>(dtf),</span>
+<span id="cb8-621"><a></a>            <span class="st">'dtf_avg'</span>: np.mean(dtf),</span>
+<span id="cb8-622"><a></a>            <span class="st">'dtb'</span>: np.array(dtb),</span>
+<span id="cb8-623"><a></a>            <span class="st">'dtb_tot'</span>: np.<span class="bu">sum</span>(dtb),</span>
+<span id="cb8-624"><a></a>            <span class="st">'dtb_avg'</span>: np.mean(dtb)</span>
+<span id="cb8-625"><a></a>        }</span>
+<span id="cb8-626"><a></a>        metrics <span class="op">=</span> {</span>
+<span id="cb8-627"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb8-628"><a></a>            <span class="st">'loss'</span>: loss,</span>
+<span id="cb8-629"><a></a>            <span class="st">'lr'</span>: lr,</span>
+<span id="cb8-630"><a></a>        }</span>
+<span id="cb8-631"><a></a>        <span class="va">self</span>.config.iter_num <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-632"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb8-633"><a></a>            <span class="st">'metrics'</span>: metrics,</span>
+<span id="cb8-634"><a></a>            <span class="st">'timers'</span>: timers,</span>
+<span id="cb8-635"><a></a>            <span class="st">'x'</span>: x,</span>
+<span id="cb8-636"><a></a>            <span class="st">'y'</span>: y,</span>
+<span id="cb8-637"><a></a>        }</span>
+<span id="cb8-638"><a></a></span>
+<span id="cb8-639"><a></a>    <span class="kw">def</span> save_ckpt(</span>
+<span id="cb8-640"><a></a>            <span class="va">self</span>,</span>
+<span id="cb8-641"><a></a>            raw_model: Optional[torch.nn.Module <span class="op">|</span> GPT] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb8-642"><a></a>            add_to_wandb: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb8-643"><a></a>    ):</span>
+<span id="cb8-644"><a></a>        <span class="cf">if</span> raw_model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-645"><a></a>            model <span class="op">=</span> raw_model  <span class="co"># type:ignore</span></span>
+<span id="cb8-646"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-647"><a></a>            model <span class="op">=</span> <span class="va">self</span>.model</span>
+<span id="cb8-648"><a></a>        <span class="cf">assert</span> model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb8-649"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(model, torch.nn.Module)</span>
+<span id="cb8-650"><a></a>        <span class="co"># assert issubclass(GPT,  torch.nn.Module)</span></span>
+<span id="cb8-651"><a></a>        ckpt <span class="op">=</span> {</span>
+<span id="cb8-652"><a></a>            <span class="st">'model'</span>: model.state_dict(),</span>
+<span id="cb8-653"><a></a>            <span class="st">'optimizer'</span>: <span class="va">self</span>.optimizer.state_dict(),</span>
+<span id="cb8-654"><a></a>            <span class="st">'model_args'</span>: asdict(<span class="va">self</span>.config.model),</span>
+<span id="cb8-655"><a></a>            <span class="st">'iter_num'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb8-656"><a></a>            <span class="st">'best_val_loss'</span>: <span class="va">self</span>.config.best_val_loss,</span>
+<span id="cb8-657"><a></a>            <span class="st">'config'</span>: asdict(<span class="va">self</span>.config),</span>
+<span id="cb8-658"><a></a>        }</span>
+<span id="cb8-659"><a></a>        <span class="co"># assert (</span></span>
+<span id="cb8-660"><a></a>        <span class="co">#     isinstance(model, GPT)</span></span>
+<span id="cb8-661"><a></a>        <span class="co">#     and issubclass(GPT, torch.nn.Module)</span></span>
+<span id="cb8-662"><a></a>        <span class="co"># )</span></span>
+<span id="cb8-663"><a></a>        <span class="co"># assert raw_model is not None</span></span>
+<span id="cb8-664"><a></a>        ckptfile <span class="op">=</span> Path(os.getcwd()).joinpath(<span class="st">'ckpt.pt'</span>)</span>
+<span id="cb8-665"><a></a>        modelfile <span class="op">=</span> Path(os.getcwd()).joinpath(<span class="st">'model.pth'</span>)</span>
+<span id="cb8-666"><a></a>        log.info(<span class="ss">f'Saving checkpoint to: </span><span class="sc">{</span>os<span class="sc">.</span>getcwd()<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-667"><a></a>        log.info(<span class="ss">f'Saving model to: </span><span class="sc">{</span>modelfile<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-668"><a></a>        torch.save(model.state_dict(), modelfile.as_posix())</span>
+<span id="cb8-669"><a></a>        torch.save(ckpt, ckptfile.as_posix())</span>
+<span id="cb8-670"><a></a>        add_to_ckpts_file(Path(os.getcwd()))</span>
+<span id="cb8-671"><a></a>        <span class="cf">if</span> add_to_wandb <span class="kw">and</span> wandb.run <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-672"><a></a>            artifact <span class="op">=</span> wandb.Artifact(<span class="st">'model'</span>, <span class="bu">type</span><span class="op">=</span><span class="st">'model'</span>)</span>
+<span id="cb8-673"><a></a>            artifact.add_file(modelfile.as_posix())</span>
+<span id="cb8-674"><a></a>            wandb.run.log_artifact(artifact)</span>
+<span id="cb8-675"><a></a></span>
+<span id="cb8-676"><a></a>    <span class="at">@timeitlogit</span>(rank<span class="op">=</span>RANK, verbose<span class="op">=</span>(RANK <span class="op">!=</span> <span class="dv">0</span>))</span>
+<span id="cb8-677"><a></a>    <span class="kw">def</span> train(</span>
+<span id="cb8-678"><a></a>            <span class="va">self</span>,</span>
+<span id="cb8-679"><a></a>            train_iters: Optional[<span class="bu">int</span>] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb8-680"><a></a>    ):</span>
+<span id="cb8-681"><a></a>        x, y <span class="op">=</span> <span class="va">self</span>.get_batch(<span class="st">'train'</span>)</span>
+<span id="cb8-682"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb8-683"><a></a>        running_mfu <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb8-684"><a></a>        output <span class="op">=</span> {<span class="st">'x'</span>: x, <span class="st">'y'</span>: y}</span>
+<span id="cb8-685"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb8-686"><a></a>        losses <span class="op">=</span> {}</span>
+<span id="cb8-687"><a></a>        train_iters <span class="op">=</span> (</span>
+<span id="cb8-688"><a></a>            <span class="va">self</span>.config.train.max_iters</span>
+<span id="cb8-689"><a></a>            <span class="cf">if</span> train_iters <span class="kw">is</span> <span class="va">None</span> <span class="cf">else</span> train_iters</span>
+<span id="cb8-690"><a></a>        )</span>
+<span id="cb8-691"><a></a>        <span class="cf">for</span> train_iter <span class="kw">in</span> trange(</span>
+<span id="cb8-692"><a></a>                train_iters,</span>
+<span id="cb8-693"><a></a>                disable<span class="op">=</span>(<span class="va">self</span>.rank <span class="op">!=</span> <span class="dv">0</span>),</span>
+<span id="cb8-694"><a></a>                total<span class="op">=</span>train_iters,</span>
+<span id="cb8-695"><a></a>        ):</span>
+<span id="cb8-696"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.iter_num <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb8-697"><a></a>                start_time <span class="op">=</span> os.environ.get(<span class="st">'START_TIME'</span>, <span class="va">None</span>)</span>
+<span id="cb8-698"><a></a>                <span class="cf">if</span> start_time <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-699"><a></a>                    startup_time <span class="op">=</span> time.perf_counter() <span class="op">-</span> <span class="bu">float</span>(start_time)</span>
+<span id="cb8-700"><a></a>                    log.info(<span class="ss">f'Startup time: </span><span class="sc">{</span>startup_time<span class="sc">:.4f}</span><span class="ss">'</span>)</span>
+<span id="cb8-701"><a></a>                    <span class="cf">if</span> wandb <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> wandb.run <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-702"><a></a>                        wandb.run.log(</span>
+<span id="cb8-703"><a></a>                            {<span class="st">'Timing/startup_time'</span>: startup_time},</span>
+<span id="cb8-704"><a></a>                            commit<span class="op">=</span><span class="va">False</span></span>
+<span id="cb8-705"><a></a>                        )</span>
+<span id="cb8-706"><a></a>                _ <span class="op">=</span> print_legend()</span>
+<span id="cb8-707"><a></a>                <span class="co"># markdown_legend()</span></span>
+<span id="cb8-708"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.iter_num <span class="op">==</span> <span class="dv">0</span> <span class="kw">and</span> <span class="va">self</span>.config.train.eval_only:</span>
+<span id="cb8-709"><a></a>                <span class="cf">return</span></span>
+<span id="cb8-710"><a></a>            <span class="cf">if</span> (</span>
+<span id="cb8-711"><a></a>                    <span class="va">self</span>.config.iter_num <span class="op">%</span> <span class="va">self</span>.config.train.eval_interval <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb8-712"><a></a>                    <span class="kw">and</span> <span class="va">self</span>.rank <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb8-713"><a></a>            ):</span>
+<span id="cb8-714"><a></a>                losses <span class="op">=</span> <span class="va">self</span>.estimate_loss()</span>
+<span id="cb8-715"><a></a>                <span class="cf">if</span> (</span>
+<span id="cb8-716"><a></a>                    <span class="va">self</span>.config.iter_num <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb8-717"><a></a>                    <span class="kw">and</span> (losses.get(<span class="st">'val'</span>, np.inf) <span class="op">&lt;</span> <span class="va">self</span>.config.best_val_loss</span>
+<span id="cb8-718"><a></a>                         <span class="kw">or</span> <span class="va">self</span>.config.train.always_save_checkpoint)</span>
+<span id="cb8-719"><a></a>                ):</span>
+<span id="cb8-720"><a></a>                    <span class="va">self</span>.save_ckpt(add_to_wandb<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-721"><a></a>            output <span class="op">=</span> <span class="va">self</span>.train_step(x<span class="op">=</span>output[<span class="st">'x'</span>], y<span class="op">=</span>output[<span class="st">'y'</span>])</span>
+<span id="cb8-722"><a></a>            t1 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb8-723"><a></a>            dt <span class="op">=</span> t1 <span class="op">-</span> t0</span>
+<span id="cb8-724"><a></a>            tokens_per_sec <span class="op">=</span> <span class="va">self</span>.config.tokens_per_iter <span class="op">/</span> dt</span>
+<span id="cb8-725"><a></a>            samples_per_sec <span class="op">=</span> <span class="va">self</span>.config.samples_per_iter <span class="op">/</span> dt</span>
+<span id="cb8-726"><a></a>            t0 <span class="op">=</span> t1</span>
+<span id="cb8-727"><a></a>            output[<span class="st">'timers'</span>] <span class="op">|=</span> {</span>
+<span id="cb8-728"><a></a>                <span class="st">'dt_iter'</span>: dt,</span>
+<span id="cb8-729"><a></a>                <span class="st">'tokens_per_sec'</span>: tokens_per_sec,</span>
+<span id="cb8-730"><a></a>                <span class="st">'samples_per_sec'</span>: samples_per_sec,</span>
+<span id="cb8-731"><a></a>            }</span>
+<span id="cb8-732"><a></a>            <span class="co"># metrics = output['metrics']</span></span>
+<span id="cb8-733"><a></a>            <span class="co"># metrics |= output['timers']</span></span>
+<span id="cb8-734"><a></a>            lossf <span class="op">=</span> output[<span class="st">'metrics'</span>][<span class="st">'loss'</span>].item() <span class="op">*</span> <span class="va">self</span>._gas</span>
+<span id="cb8-735"><a></a>            output[<span class="st">'metrics'</span>][<span class="st">'loss_tot'</span>] <span class="op">=</span> lossf</span>
+<span id="cb8-736"><a></a>            _ <span class="op">=</span> <span class="va">self</span>.train_history.update(output[<span class="st">'timers'</span>])</span>
+<span id="cb8-737"><a></a>            _ <span class="op">=</span> <span class="va">self</span>.train_history.update(output[<span class="st">'metrics'</span>])</span>
+<span id="cb8-738"><a></a>            zero <span class="op">=</span> torch.tensor(<span class="fl">0.0</span>)</span>
+<span id="cb8-739"><a></a>            <span class="cf">if</span> (</span>
+<span id="cb8-740"><a></a>                    <span class="va">self</span>.config.iter_num <span class="op">%</span> <span class="va">self</span>.config.train.log_interval <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb8-741"><a></a>                    <span class="kw">and</span> (<span class="va">self</span>.rank <span class="op">==</span> <span class="dv">0</span>)</span>
+<span id="cb8-742"><a></a>            ):</span>
+<span id="cb8-743"><a></a>                <span class="cf">if</span> train_iter <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
+<span id="cb8-744"><a></a>                    mfu <span class="op">=</span> <span class="va">self</span>.model.estimate_mfu(</span>
+<span id="cb8-745"><a></a>                        (</span>
+<span id="cb8-746"><a></a>                            <span class="va">self</span>.config.model.batch_size</span>
+<span id="cb8-747"><a></a>                            <span class="op">*</span> <span class="va">self</span>.config.optimizer.gas</span>
+<span id="cb8-748"><a></a>                        ),</span>
+<span id="cb8-749"><a></a>                        dt<span class="op">=</span>dt</span>
+<span id="cb8-750"><a></a>                    )</span>
+<span id="cb8-751"><a></a>                    running_mfu <span class="op">=</span> (</span>
+<span id="cb8-752"><a></a>                        mfu <span class="cf">if</span> running_mfu <span class="op">==</span> <span class="op">-</span><span class="fl">1.0</span></span>
+<span id="cb8-753"><a></a>                        <span class="cf">else</span> <span class="fl">0.9</span> <span class="op">*</span> running_mfu <span class="op">+</span> <span class="fl">0.1</span> <span class="op">*</span> mfu</span>
+<span id="cb8-754"><a></a>                    )</span>
+<span id="cb8-755"><a></a>                pvars <span class="op">=</span> {</span>
+<span id="cb8-756"><a></a>                    <span class="st">'step'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb8-757"><a></a>                    <span class="st">'loss'</span>: lossf,</span>
+<span id="cb8-758"><a></a>                    <span class="st">'dt'</span>: dt <span class="op">*</span> <span class="dv">1000</span>,</span>
+<span id="cb8-759"><a></a>                    <span class="st">'dtf'</span>: output[<span class="st">'timers'</span>][<span class="st">'dtf_avg'</span>] <span class="op">*</span> <span class="dv">1000</span>,</span>
+<span id="cb8-760"><a></a>                    <span class="st">'dtb'</span>: output[<span class="st">'timers'</span>][<span class="st">'dtb_avg'</span>] <span class="op">*</span> <span class="dv">1000</span>,</span>
+<span id="cb8-761"><a></a>                    <span class="st">'sps'</span>: samples_per_sec,</span>
+<span id="cb8-762"><a></a>                    <span class="st">'mtps'</span>: tokens_per_sec <span class="op">/</span> <span class="bu">int</span>(<span class="fl">1e6</span>),</span>
+<span id="cb8-763"><a></a>                    <span class="st">'mfu'</span>: running_mfu <span class="op">*</span> <span class="dv">100</span>,</span>
+<span id="cb8-764"><a></a>                    <span class="st">'train_loss'</span>: losses.get(<span class="st">'train'</span>, zero).item(),</span>
+<span id="cb8-765"><a></a>                    <span class="st">'val_loss'</span>: losses.get(<span class="st">'val'</span>, zero).item(),</span>
+<span id="cb8-766"><a></a>                }</span>
+<span id="cb8-767"><a></a>                summary <span class="op">=</span> summarize_dict(pvars)</span>
+<span id="cb8-768"><a></a>                log.info(Text(summary))</span>
+<span id="cb8-769"><a></a>                <span class="cf">if</span> wandb.run <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb8-770"><a></a>                    losses <span class="op">|=</span> {</span>
+<span id="cb8-771"><a></a>                        <span class="st">'lossf'</span>: lossf,</span>
+<span id="cb8-772"><a></a>                        <span class="st">'mfu'</span>: running_mfu <span class="op">*</span> <span class="dv">100</span>,</span>
+<span id="cb8-773"><a></a>                        <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb8-774"><a></a>                    }</span>
+<span id="cb8-775"><a></a>                    losses[<span class="st">'lossf'</span>] <span class="op">=</span> lossf</span>
+<span id="cb8-776"><a></a>                    losses[<span class="st">'iter'</span>] <span class="op">=</span> <span class="va">self</span>.config.iter_num</span>
+<span id="cb8-777"><a></a>                    wbmetrics <span class="op">=</span> {</span>
+<span id="cb8-778"><a></a>                        <span class="ss">f'Training/</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">'</span>: (</span>
+<span id="cb8-779"><a></a>                            (wandb.Histogram(v.tolist())</span>
+<span id="cb8-780"><a></a>                                <span class="cf">if</span> <span class="bu">isinstance</span>(v, np.ndarray) <span class="cf">else</span> v)</span>
+<span id="cb8-781"><a></a>                        ) <span class="cf">for</span> k, v <span class="kw">in</span> output[<span class="st">'metrics'</span>].items()</span>
+<span id="cb8-782"><a></a>                    }</span>
+<span id="cb8-783"><a></a>                    wbmetrics <span class="op">|=</span> {</span>
+<span id="cb8-784"><a></a>                        <span class="ss">f'Timing/</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">'</span>: (</span>
+<span id="cb8-785"><a></a>                            (wandb.Histogram(v.tolist())</span>
+<span id="cb8-786"><a></a>                                <span class="cf">if</span> <span class="bu">isinstance</span>(v, np.ndarray) <span class="cf">else</span> v)</span>
+<span id="cb8-787"><a></a>                        ) <span class="cf">for</span> k, v <span class="kw">in</span> output[<span class="st">'timers'</span>].items()</span>
+<span id="cb8-788"><a></a>                    }</span>
+<span id="cb8-789"><a></a>                    wbmetrics <span class="op">|=</span> {</span>
+<span id="cb8-790"><a></a>                        <span class="ss">f'Loss/</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">'</span>: v <span class="cf">for</span> k, v <span class="kw">in</span> losses.items()</span>
+<span id="cb8-791"><a></a>                    }</span>
+<span id="cb8-792"><a></a>                    wandb.run.log(wbmetrics)</span>
+<span id="cb8-793"><a></a>                    <span class="co"># wandb.run.log({</span></span>
+<span id="cb8-794"><a></a>                    <span class="co">#     'losses': losses,</span></span>
+<span id="cb8-795"><a></a>                    <span class="co">#     'metrics': output['metrics'],</span></span>
+<span id="cb8-796"><a></a>                    <span class="co">#     'timers': output['timers'],</span></span>
+<span id="cb8-797"><a></a>                    <span class="co">#     # 'training': metrics,</span></span>
+<span id="cb8-798"><a></a>                    <span class="co"># })</span></span>
+<span id="cb8-799"><a></a></span>
+<span id="cb8-800"><a></a>    <span class="kw">def</span> unwrap_model_engine(<span class="va">self</span>) <span class="op">-&gt;</span> torch.nn.Module:</span>
+<span id="cb8-801"><a></a>        <span class="cf">if</span> <span class="bu">hasattr</span>(<span class="va">self</span>.model, <span class="st">'module'</span>):</span>
+<span id="cb8-802"><a></a>            <span class="cf">return</span> <span class="va">self</span>.model.module</span>
+<span id="cb8-803"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb8-804"><a></a>            <span class="cf">return</span> <span class="va">self</span>.model</span>
+<span id="cb8-805"><a></a></span>
+<span id="cb8-806"><a></a>    <span class="kw">def</span> evaluate(</span>
+<span id="cb8-807"><a></a>            <span class="va">self</span>,</span>
+<span id="cb8-808"><a></a>            s: <span class="bu">str</span>,</span>
+<span id="cb8-809"><a></a>            num_samples: <span class="bu">int</span> <span class="op">=</span> <span class="dv">10</span>,</span>
+<span id="cb8-810"><a></a>            max_new_tokens: <span class="bu">int</span> <span class="op">=</span> <span class="dv">500</span>,</span>
+<span id="cb8-811"><a></a>            temperature: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span id="cb8-812"><a></a>            top_k: <span class="bu">int</span> <span class="op">=</span> <span class="dv">200</span>,</span>
+<span id="cb8-813"><a></a>            display: Optional[<span class="bu">bool</span>] <span class="op">=</span> <span class="va">True</span>,</span>
+<span id="cb8-814"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">dict</span>[<span class="bu">str</span>, <span class="bu">str</span>]:</span>
+<span id="cb8-815"><a></a>        <span class="co"># seed: Optional[int] = None,</span></span>
+<span id="cb8-816"><a></a>        <span class="co"># assert isinstance(self.model.module, GPT)</span></span>
+<span id="cb8-817"><a></a>        <span class="co"># assert issubclass(GPT, torch.nn.Module)</span></span>
+<span id="cb8-818"><a></a>        model <span class="op">=</span> <span class="va">self</span>.unwrap_model_engine()</span>
+<span id="cb8-819"><a></a>        model.<span class="bu">eval</span>()</span>
+<span id="cb8-820"><a></a>        outputs <span class="op">=</span> {}</span>
+<span id="cb8-821"><a></a>        <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb8-822"><a></a>            start_ids <span class="op">=</span> <span class="va">self</span>.config.data.encode(s)</span>
+<span id="cb8-823"><a></a>            x <span class="op">=</span> torch.tensor(</span>
+<span id="cb8-824"><a></a>                    start_ids,</span>
+<span id="cb8-825"><a></a>                    dtype<span class="op">=</span>torch.<span class="bu">long</span>,</span>
+<span id="cb8-826"><a></a>                    device<span class="op">=</span><span class="va">self</span>.device,</span>
+<span id="cb8-827"><a></a>            )[<span class="va">None</span>, ...]</span>
+<span id="cb8-828"><a></a>            <span class="cf">for</span> idx <span class="kw">in</span> <span class="bu">range</span>(num_samples):</span>
+<span id="cb8-829"><a></a>                <span class="co"># y = self.model.module.generate(</span></span>
+<span id="cb8-830"><a></a>                y <span class="op">=</span> model.generate(</span>
+<span id="cb8-831"><a></a>                    x,</span>
+<span id="cb8-832"><a></a>                    max_new_tokens,</span>
+<span id="cb8-833"><a></a>                    temperature<span class="op">=</span>temperature,</span>
+<span id="cb8-834"><a></a>                    top_k<span class="op">=</span>top_k</span>
+<span id="cb8-835"><a></a>                )</span>
+<span id="cb8-836"><a></a>                response <span class="op">=</span> <span class="va">self</span>.config.data.decode(y[<span class="dv">0</span>].tolist())</span>
+<span id="cb8-837"><a></a>                <span class="co"># outputs.append(response)</span></span>
+<span id="cb8-838"><a></a>                response_ <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> response.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)]</span>
+<span id="cb8-839"><a></a>                prompt <span class="op">=</span> response_[<span class="dv">0</span>]</span>
+<span id="cb8-840"><a></a>                responses <span class="op">=</span> [<span class="op">*</span>response_[<span class="dv">1</span>:]]</span>
+<span id="cb8-841"><a></a>                ret0 <span class="op">=</span> <span class="vs">fr"[prompt]: '</span><span class="sc">{</span>prompt<span class="sc">}</span><span class="vs">'"</span></span>
+<span id="cb8-842"><a></a>                ret1 <span class="op">=</span> <span class="st">'&gt; '</span> <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">&gt; '</span>.join(responses)</span>
+<span id="cb8-843"><a></a>                <span class="cf">if</span> display:</span>
+<span id="cb8-844"><a></a>                    log.info(<span class="ss">f'</span><span class="sc">{</span>ret0<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-845"><a></a>                    log.info(<span class="ss">f'</span><span class="sc">{</span>ret1<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb8-846"><a></a>                outputs[<span class="ss">f'</span><span class="sc">{</span>idx<span class="sc">}</span><span class="ss">'</span>] <span class="op">=</span> {</span>
+<span id="cb8-847"><a></a>                    <span class="st">'raw'</span>: response,</span>
+<span id="cb8-848"><a></a>                    <span class="st">'prompt'</span>: Text(ret0, style<span class="op">=</span><span class="st">'string'</span>),</span>
+<span id="cb8-849"><a></a>                    <span class="st">'formatted'</span>: Text(ret1, style<span class="op">=</span><span class="st">'blockquote'</span>),</span>
+<span id="cb8-850"><a></a>                }</span>
+<span id="cb8-851"><a></a>                <span class="co"># log.info(f'[prompt]: "{s}"')</span></span>
+<span id="cb8-852"><a></a>                <span class="co"># # responses = reponse.split('\n ')</span></span>
+<span id="cb8-853"><a></a>                <span class="co"># log.info('&gt; "' + '\n&gt; '.join(response.split('\n ')) + '"')</span></span>
+<span id="cb8-854"><a></a>                <span class="co">#</span></span>
+<span id="cb8-855"><a></a>                <span class="co"># log.info('\n'.join)</span></span>
+<span id="cb8-856"><a></a>                <span class="co"># log.info(f'&gt; "{response}"')</span></span>
+<span id="cb8-857"><a></a>                <span class="co"># log.info(100 * '-')</span></span>
+<span id="cb8-858"><a></a>        <span class="cf">return</span> outputs</span></code></pre></div>
 </div>
 <div id="tabset-2-2">
-<div class="sourceCode" id="cb9" data-startfrom="487"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 486;"><span id="cb9-487"><a></a>    <span class="kw">def</span> estimate_loss(<span class="va">self</span>):</span>
-<span id="cb9-488"><a></a>        out <span class="op">=</span> {}</span>
-<span id="cb9-489"><a></a>        <span class="va">self</span>.model.<span class="bu">eval</span>()</span>
-<span id="cb9-490"><a></a>        <span class="cf">for</span> split <span class="kw">in</span> <span class="va">self</span>.config.data.data.keys():</span>
-<span id="cb9-491"><a></a>            losses <span class="op">=</span> torch.zeros(<span class="va">self</span>.config.train.eval_iters)</span>
-<span id="cb9-492"><a></a>            <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.config.train.eval_iters):</span>
-<span id="cb9-493"><a></a>                x, y <span class="op">=</span> <span class="va">self</span>.get_batch(split)</span>
-<span id="cb9-494"><a></a>                <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
-<span id="cb9-495"><a></a>                    _, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
-<span id="cb9-496"><a></a>                losses[k] <span class="op">=</span> loss.item()</span>
-<span id="cb9-497"><a></a>            out[split] <span class="op">=</span> losses.mean()</span>
-<span id="cb9-498"><a></a>        <span class="va">self</span>.model.train()</span>
-<span id="cb9-499"><a></a>        <span class="cf">return</span> out</span>
-<span id="cb9-500"><a></a></span></code></pre></div>
+<div class="sourceCode" id="cb9" data-startfrom="544"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 543;"><span id="cb9-544"><a></a>    <span class="kw">def</span> _backward_step(</span>
+<span id="cb9-545"><a></a>            <span class="va">self</span>,</span>
+<span id="cb9-546"><a></a>            loss: torch.Tensor,</span>
+<span id="cb9-547"><a></a>            propagate_grads: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,</span>
+<span id="cb9-548"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb9-549"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
+<span id="cb9-550"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="kw">in</span> [<span class="st">'ds'</span>, <span class="st">'deepspeed'</span>]:</span>
+<span id="cb9-551"><a></a>            <span class="va">self</span>.model_engine.backward(loss)  <span class="co"># type:ignore</span></span>
+<span id="cb9-552"><a></a>            <span class="va">self</span>.model_engine.step(loss)      <span class="co"># type:ignore</span></span>
+<span id="cb9-553"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb9-554"><a></a>            <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-555"><a></a>                <span class="va">self</span>.grad_scaler.scale(loss).backward()  <span class="co"># type:ignore</span></span>
+<span id="cb9-556"><a></a>            <span class="cf">if</span> propagate_grads:</span>
+<span id="cb9-557"><a></a>                <span class="cf">if</span> <span class="va">self</span>.config.optimizer.grad_clip <span class="op">!=</span> <span class="fl">0.0</span>:</span>
+<span id="cb9-558"><a></a>                    <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-559"><a></a>                        <span class="va">self</span>.grad_scaler.unscale_(<span class="va">self</span>.optimizer)</span>
+<span id="cb9-560"><a></a>                    torch.nn.utils.clip_grad_norm_(  <span class="co"># pyright: ignore</span></span>
+<span id="cb9-561"><a></a>                        <span class="va">self</span>.model_engine.parameters(),</span>
+<span id="cb9-562"><a></a>                        <span class="va">self</span>.config.optimizer.grad_clip</span>
+<span id="cb9-563"><a></a>                    )</span>
+<span id="cb9-564"><a></a>                <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-565"><a></a>                    <span class="va">self</span>.grad_scaler.step(<span class="va">self</span>.optimizer)</span>
+<span id="cb9-566"><a></a>                    <span class="va">self</span>.grad_scaler.update()</span>
+<span id="cb9-567"><a></a>                    <span class="va">self</span>.optimizer.zero_grad(set_to_none<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-568"><a></a></span>
+<span id="cb9-569"><a></a>        <span class="cf">return</span> time.perf_counter() <span class="op">-</span> t0</span></code></pre></div>
 </div>
 <div id="tabset-2-3">
-<div class="sourceCode" id="cb10" data-startfrom="534"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 533;"><span id="cb10-534"><a></a>    <span class="kw">def</span> _forward_step(<span class="va">self</span>, x: torch.Tensor, y: torch.Tensor) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb10-535"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
-<span id="cb10-536"><a></a>        <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
-<span id="cb10-537"><a></a>            logits, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
-<span id="cb10-538"><a></a>        <span class="cf">return</span> {</span>
-<span id="cb10-539"><a></a>            <span class="st">'logits'</span>: logits,</span>
-<span id="cb10-540"><a></a>            <span class="st">'loss'</span>: loss,</span>
-<span id="cb10-541"><a></a>            <span class="st">'dt'</span>: time.perf_counter() <span class="op">-</span> t0</span>
-<span id="cb10-542"><a></a>        }</span></code></pre></div>
+<div class="sourceCode" id="cb10" data-startfrom="571"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 570;"><span id="cb10-571"><a></a>    <span class="kw">def</span> train_step(</span>
+<span id="cb10-572"><a></a>            <span class="va">self</span>,</span>
+<span id="cb10-573"><a></a>            x: torch.Tensor,</span>
+<span id="cb10-574"><a></a>            y: torch.Tensor,</span>
+<span id="cb10-575"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb10-576"><a></a>        lr <span class="op">=</span> (</span>
+<span id="cb10-577"><a></a>            <span class="va">self</span>.get_lr(<span class="va">self</span>.config.iter_num)</span>
+<span id="cb10-578"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.optimizer.decay_lr</span>
+<span id="cb10-579"><a></a>            <span class="cf">else</span> <span class="va">self</span>._lr</span>
+<span id="cb10-580"><a></a>        )</span>
+<span id="cb10-581"><a></a>        <span class="cf">for</span> param_group <span class="kw">in</span> <span class="va">self</span>.optimizer.param_groups:</span>
+<span id="cb10-582"><a></a>            param_group[<span class="st">'lr'</span>] <span class="op">=</span> lr</span>
+<span id="cb10-583"><a></a>        dtf <span class="op">=</span> []</span>
+<span id="cb10-584"><a></a>        dtb <span class="op">=</span> []</span>
+<span id="cb10-585"><a></a>        dt <span class="op">=</span> []</span>
+<span id="cb10-586"><a></a>        loss <span class="op">=</span> torch.tensor(<span class="fl">0.0</span>)</span>
+<span id="cb10-587"><a></a>        <span class="cf">for</span> micro_step <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>._gas):</span>
+<span id="cb10-588"><a></a>            is_last_micro_step <span class="op">=</span> (micro_step <span class="op">==</span> <span class="va">self</span>._gas <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb10-589"><a></a>            <span class="co"># </span><span class="al">NOTE</span><span class="co">: -----------------------------------------------------------</span></span>
+<span id="cb10-590"><a></a>            <span class="co"># In DDP training we only need to sync gradients at the last micro</span></span>
+<span id="cb10-591"><a></a>            <span class="co"># step. the official way to do this is with model.no_sync() context</span></span>
+<span id="cb10-592"><a></a>            <span class="co"># manager, but I really dislike that this bloats the code and</span></span>
+<span id="cb10-593"><a></a>            <span class="co"># forces us to repeat code looking at the source of that context</span></span>
+<span id="cb10-594"><a></a>            <span class="co"># manager, it just toggles this variable</span></span>
+<span id="cb10-595"><a></a>            <span class="co"># -----------------------------------------------------------------</span></span>
+<span id="cb10-596"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="op">==</span> <span class="st">'ddp'</span>:</span>
+<span id="cb10-597"><a></a>                _ <span class="op">=</span> (</span>
+<span id="cb10-598"><a></a>                    <span class="va">self</span>.model_engine.require_backward_grad_sync</span>
+<span id="cb10-599"><a></a>                    <span class="cf">if</span> (is_last_micro_step <span class="kw">and</span> <span class="va">self</span>.world_size <span class="op">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb10-600"><a></a>                    <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb10-601"><a></a>                )</span>
+<span id="cb10-602"><a></a>            fout <span class="op">=</span> <span class="va">self</span>._forward_step(x, y)</span>
+<span id="cb10-603"><a></a>            <span class="co"># immediately async prefetch next batch while model is doing the</span></span>
+<span id="cb10-604"><a></a>            <span class="co"># forward pass on the GPU</span></span>
+<span id="cb10-605"><a></a>            x, y <span class="op">=</span> <span class="va">self</span>.get_batch(<span class="st">'train'</span>)</span>
+<span id="cb10-606"><a></a>            loss <span class="op">=</span> fout[<span class="st">'loss'</span>] <span class="op">/</span> <span class="va">self</span>._gas</span>
+<span id="cb10-607"><a></a>            dtf.append(fout[<span class="st">'dt'</span>])</span>
+<span id="cb10-608"><a></a>            dtb_ <span class="op">=</span> <span class="va">self</span>._backward_step(</span>
+<span id="cb10-609"><a></a>                loss,</span>
+<span id="cb10-610"><a></a>                propagate_grads<span class="op">=</span>is_last_micro_step</span>
+<span id="cb10-611"><a></a>            )</span>
+<span id="cb10-612"><a></a>            dtb.append(dtb_)</span>
+<span id="cb10-613"><a></a>            dt.append(dtf <span class="op">+</span> dtb)</span>
+<span id="cb10-614"><a></a>        timers <span class="op">=</span> {</span>
+<span id="cb10-615"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb10-616"><a></a>            <span class="st">'dt'</span>: np.array(dt),</span>
+<span id="cb10-617"><a></a>            <span class="st">'dt_tot'</span>: np.<span class="bu">sum</span>(dt),</span>
+<span id="cb10-618"><a></a>            <span class="st">'dt_avg'</span>: np.mean(dt),</span>
+<span id="cb10-619"><a></a>            <span class="st">'dtf'</span>: np.array(dtf),</span>
+<span id="cb10-620"><a></a>            <span class="st">'dtf_tot'</span>: np.<span class="bu">sum</span>(dtf),</span>
+<span id="cb10-621"><a></a>            <span class="st">'dtf_avg'</span>: np.mean(dtf),</span>
+<span id="cb10-622"><a></a>            <span class="st">'dtb'</span>: np.array(dtb),</span>
+<span id="cb10-623"><a></a>            <span class="st">'dtb_tot'</span>: np.<span class="bu">sum</span>(dtb),</span>
+<span id="cb10-624"><a></a>            <span class="st">'dtb_avg'</span>: np.mean(dtb)</span>
+<span id="cb10-625"><a></a>        }</span>
+<span id="cb10-626"><a></a>        metrics <span class="op">=</span> {</span>
+<span id="cb10-627"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb10-628"><a></a>            <span class="st">'loss'</span>: loss,</span>
+<span id="cb10-629"><a></a>            <span class="st">'lr'</span>: lr,</span>
+<span id="cb10-630"><a></a>        }</span>
+<span id="cb10-631"><a></a>        <span class="va">self</span>.config.iter_num <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb10-632"><a></a>        <span class="cf">return</span> {</span>
+<span id="cb10-633"><a></a>            <span class="st">'metrics'</span>: metrics,</span>
+<span id="cb10-634"><a></a>            <span class="st">'timers'</span>: timers,</span>
+<span id="cb10-635"><a></a>            <span class="st">'x'</span>: x,</span>
+<span id="cb10-636"><a></a>            <span class="st">'y'</span>: y,</span>
+<span id="cb10-637"><a></a>        }</span>
+<span id="cb10-638"><a></a></span>
+<span id="cb10-639"><a></a>    <span class="kw">def</span> save_ckpt(</span>
+<span id="cb10-640"><a></a>            <span class="va">self</span>,</span>
+<span id="cb10-641"><a></a>            raw_model: Optional[torch.nn.Module <span class="op">|</span> GPT] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb10-642"><a></a>            add_to_wandb: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb10-643"><a></a>    ):</span>
+<span id="cb10-644"><a></a>        <span class="cf">if</span> raw_model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-645"><a></a>            model <span class="op">=</span> raw_model  <span class="co"># type:ignore</span></span>
+<span id="cb10-646"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb10-647"><a></a>            model <span class="op">=</span> <span class="va">self</span>.model</span>
+<span id="cb10-648"><a></a>        <span class="cf">assert</span> model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb10-649"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(model, torch.nn.Module)</span>
+<span id="cb10-650"><a></a>        <span class="co"># assert issubclass(GPT,  torch.nn.Module)</span></span>
+<span id="cb10-651"><a></a>        ckpt <span class="op">=</span> {</span>
+<span id="cb10-652"><a></a>            <span class="st">'model'</span>: model.state_dict(),</span>
+<span id="cb10-653"><a></a>            <span class="st">'optimizer'</span>: <span class="va">self</span>.optimizer.state_dict(),</span>
+<span id="cb10-654"><a></a>            <span class="st">'model_args'</span>: asdict(<span class="va">self</span>.config.model),</span>
+<span id="cb10-655"><a></a>            <span class="st">'iter_num'</span>: <span class="va">self</span>.config.iter_num,</span>
+<span id="cb10-656"><a></a>            <span class="st">'best_val_loss'</span>: <span class="va">self</span>.config.best_val_loss,</span>
+<span id="cb10-657"><a></a>            <span class="st">'config'</span>: asdict(<span class="va">self</span>.config),</span>
+<span id="cb10-658"><a></a>        }</span>
+<span id="cb10-659"><a></a>        <span class="co"># assert (</span></span>
+<span id="cb10-660"><a></a>        <span class="co">#     isinstance(model, GPT)</span></span>
+<span id="cb10-661"><a></a>        <span class="co">#     and issubclass(GPT, torch.nn.Module)</span></span>
+<span id="cb10-662"><a></a>        <span class="co"># )</span></span>
+<span id="cb10-663"><a></a>        <span class="co"># assert raw_model is not None</span></span>
+<span id="cb10-664"><a></a>        ckptfile <span class="op">=</span> Path(os.getcwd()).joinpath(<span class="st">'ckpt.pt'</span>)</span>
+<span id="cb10-665"><a></a>        modelfile <span class="op">=</span> Path(os.getcwd()).joinpath(<span class="st">'model.pth'</span>)</span>
+<span id="cb10-666"><a></a>        log.info(<span class="ss">f'Saving checkpoint to: </span><span class="sc">{</span>os<span class="sc">.</span>getcwd()<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb10-667"><a></a>        log.info(<span class="ss">f'Saving model to: </span><span class="sc">{</span>modelfile<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb10-668"><a></a>        torch.save(model.state_dict(), modelfile.as_posix())</span>
+<span id="cb10-669"><a></a>        torch.save(ckpt, ckptfile.as_posix())</span>
+<span id="cb10-670"><a></a>        add_to_ckpts_file(Path(os.getcwd()))</span>
+<span id="cb10-671"><a></a>        <span class="cf">if</span> add_to_wandb <span class="kw">and</span> wandb.run <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-672"><a></a>            artifact <span class="op">=</span> wandb.Artifact(<span class="st">'model'</span>, <span class="bu">type</span><span class="op">=</span><span class="st">'model'</span>)</span>
+<span id="cb10-673"><a></a>            artifact.add_file(modelfile.as_posix())</span>
+<span id="cb10-674"><a></a>            wandb.run.log_artifact(artifact)</span></code></pre></div>
 </div>
 <div id="tabset-2-4">
-<div class="sourceCode" id="cb11" data-startfrom="544"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 543;"><span id="cb11-544"><a></a>    <span class="kw">def</span> _backward_step(</span>
-<span id="cb11-545"><a></a>            <span class="va">self</span>,</span>
-<span id="cb11-546"><a></a>            loss: torch.Tensor,</span>
-<span id="cb11-547"><a></a>            propagate_grads: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,</span>
-<span id="cb11-548"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
-<span id="cb11-549"><a></a>        t0 <span class="op">=</span> time.perf_counter()</span>
-<span id="cb11-550"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="kw">in</span> [<span class="st">'ds'</span>, <span class="st">'deepspeed'</span>]:</span>
-<span id="cb11-551"><a></a>            <span class="va">self</span>.model_engine.backward(loss)  <span class="co"># type:ignore</span></span>
-<span id="cb11-552"><a></a>            <span class="va">self</span>.model_engine.step(loss)      <span class="co"># type:ignore</span></span>
-<span id="cb11-553"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb11-554"><a></a>            <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb11-555"><a></a>                <span class="va">self</span>.grad_scaler.scale(loss).backward()  <span class="co"># type:ignore</span></span>
-<span id="cb11-556"><a></a>            <span class="cf">if</span> propagate_grads:</span>
-<span id="cb11-557"><a></a>                <span class="cf">if</span> <span class="va">self</span>.config.optimizer.grad_clip <span class="op">!=</span> <span class="fl">0.0</span>:</span>
-<span id="cb11-558"><a></a>                    <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb11-559"><a></a>                        <span class="va">self</span>.grad_scaler.unscale_(<span class="va">self</span>.optimizer)</span>
-<span id="cb11-560"><a></a>                    torch.nn.utils.clip_grad_norm_(  <span class="co"># pyright: ignore</span></span>
-<span id="cb11-561"><a></a>                        <span class="va">self</span>.model_engine.parameters(),</span>
-<span id="cb11-562"><a></a>                        <span class="va">self</span>.config.optimizer.grad_clip</span>
-<span id="cb11-563"><a></a>                    )</span>
-<span id="cb11-564"><a></a>                <span class="cf">if</span> <span class="va">self</span>.grad_scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb11-565"><a></a>                    <span class="va">self</span>.grad_scaler.step(<span class="va">self</span>.optimizer)</span>
-<span id="cb11-566"><a></a>                    <span class="va">self</span>.grad_scaler.update()</span>
-<span id="cb11-567"><a></a>                    <span class="va">self</span>.optimizer.zero_grad(set_to_none<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb11-568"><a></a></span>
-<span id="cb11-569"><a></a>        <span class="cf">return</span> time.perf_counter() <span class="op">-</span> t0</span></code></pre></div>
+<div class="sourceCode" id="cb11" data-startfrom="446"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 445;"><span id="cb11-446"><a></a>    <span class="kw">def</span> get_batch(<span class="va">self</span>, split: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[torch.Tensor, torch.Tensor]:</span>
+<span id="cb11-447"><a></a>        <span class="co"># data = self.config.train_data if split == 'train'</span></span>
+<span id="cb11-448"><a></a>        <span class="co"># else self.config.val_data</span></span>
+<span id="cb11-449"><a></a>        data <span class="op">=</span> <span class="va">self</span>.config.data.data.get(split, <span class="va">None</span>)</span>
+<span id="cb11-450"><a></a>        <span class="cf">assert</span> data <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb11-451"><a></a>        ix <span class="op">=</span> torch.randint(</span>
+<span id="cb11-452"><a></a>            <span class="bu">len</span>(data) <span class="op">-</span> <span class="va">self</span>.config.model.block_size,</span>
+<span id="cb11-453"><a></a>            (<span class="va">self</span>.config.model.batch_size,)</span>
+<span id="cb11-454"><a></a>        )</span>
+<span id="cb11-455"><a></a>        block_size <span class="op">=</span> <span class="va">self</span>.config.model.block_size</span>
+<span id="cb11-456"><a></a>        x <span class="op">=</span> torch.stack(</span>
+<span id="cb11-457"><a></a>            [</span>
+<span id="cb11-458"><a></a>                torch.from_numpy((data[i:i<span class="op">+</span>block_size]).astype(np.int64))</span>
+<span id="cb11-459"><a></a>                <span class="cf">for</span> i <span class="kw">in</span> ix</span>
+<span id="cb11-460"><a></a>            ]</span>
+<span id="cb11-461"><a></a>        )</span>
+<span id="cb11-462"><a></a>        y <span class="op">=</span> torch.stack(</span>
+<span id="cb11-463"><a></a>            [</span>
+<span id="cb11-464"><a></a>                torch.from_numpy((data[i<span class="op">+</span><span class="dv">1</span>:i<span class="op">+</span><span class="dv">1</span><span class="op">+</span>block_size]).astype(np.int64))</span>
+<span id="cb11-465"><a></a>                <span class="cf">for</span> i <span class="kw">in</span> ix</span>
+<span id="cb11-466"><a></a>            ]</span>
+<span id="cb11-467"><a></a>        )</span>
+<span id="cb11-468"><a></a>        <span class="cf">if</span> <span class="va">self</span>.config.device_type <span class="op">==</span> <span class="st">'cuda'</span>:</span>
+<span id="cb11-469"><a></a>            x <span class="op">=</span> x.pin_memory().to(<span class="va">self</span>.config.device_type, non_blocking<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-470"><a></a>            y <span class="op">=</span> y.pin_memory().to(<span class="va">self</span>.config.device_type, non_blocking<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-471"><a></a>        <span class="cf">else</span>:</span>
+<span id="cb11-472"><a></a>            x <span class="op">=</span> x.to(<span class="va">self</span>.config.device_type)</span>
+<span id="cb11-473"><a></a>            y <span class="op">=</span> y.to(<span class="va">self</span>.config.device_type)</span>
+<span id="cb11-474"><a></a>        <span class="cf">return</span> x, y</span></code></pre></div>
 </div>
 <div id="tabset-2-5">
-<div class="sourceCode" id="cb12" data-startfrom="571"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 570;"><span id="cb12-571"><a></a>    <span class="kw">def</span> train_step(</span>
-<span id="cb12-572"><a></a>            <span class="va">self</span>,</span>
-<span id="cb12-573"><a></a>            x: torch.Tensor,</span>
-<span id="cb12-574"><a></a>            y: torch.Tensor,</span>
-<span id="cb12-575"><a></a>    ) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb12-576"><a></a>        lr <span class="op">=</span> (</span>
-<span id="cb12-577"><a></a>            <span class="va">self</span>.get_lr(<span class="va">self</span>.config.iter_num)</span>
-<span id="cb12-578"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.optimizer.decay_lr</span>
-<span id="cb12-579"><a></a>            <span class="cf">else</span> <span class="va">self</span>._lr</span>
-<span id="cb12-580"><a></a>        )</span>
-<span id="cb12-581"><a></a>        <span class="cf">for</span> param_group <span class="kw">in</span> <span class="va">self</span>.optimizer.param_groups:</span>
-<span id="cb12-582"><a></a>            param_group[<span class="st">'lr'</span>] <span class="op">=</span> lr</span>
-<span id="cb12-583"><a></a>        dtf <span class="op">=</span> []</span>
-<span id="cb12-584"><a></a>        dtb <span class="op">=</span> []</span>
-<span id="cb12-585"><a></a>        dt <span class="op">=</span> []</span>
-<span id="cb12-586"><a></a>        loss <span class="op">=</span> torch.tensor(<span class="fl">0.0</span>)</span>
-<span id="cb12-587"><a></a>        <span class="cf">for</span> micro_step <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>._gas):</span>
-<span id="cb12-588"><a></a>            is_last_micro_step <span class="op">=</span> (micro_step <span class="op">==</span> <span class="va">self</span>._gas <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb12-589"><a></a>            <span class="co"># </span><span class="al">NOTE</span><span class="co">: -----------------------------------------------------------</span></span>
-<span id="cb12-590"><a></a>            <span class="co"># In DDP training we only need to sync gradients at the last micro</span></span>
-<span id="cb12-591"><a></a>            <span class="co"># step. the official way to do this is with model.no_sync() context</span></span>
-<span id="cb12-592"><a></a>            <span class="co"># manager, but I really dislike that this bloats the code and</span></span>
-<span id="cb12-593"><a></a>            <span class="co"># forces us to repeat code looking at the source of that context</span></span>
-<span id="cb12-594"><a></a>            <span class="co"># manager, it just toggles this variable</span></span>
-<span id="cb12-595"><a></a>            <span class="co"># -----------------------------------------------------------------</span></span>
-<span id="cb12-596"><a></a>            <span class="cf">if</span> <span class="va">self</span>.config.train.backend.lower() <span class="op">==</span> <span class="st">'ddp'</span>:</span>
-<span id="cb12-597"><a></a>                _ <span class="op">=</span> (</span>
-<span id="cb12-598"><a></a>                    <span class="va">self</span>.model_engine.require_backward_grad_sync</span>
-<span id="cb12-599"><a></a>                    <span class="cf">if</span> (is_last_micro_step <span class="kw">and</span> <span class="va">self</span>.world_size <span class="op">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb12-600"><a></a>                    <span class="cf">else</span> <span class="va">None</span></span>
-<span id="cb12-601"><a></a>                )</span>
-<span id="cb12-602"><a></a>            fout <span class="op">=</span> <span class="va">self</span>._forward_step(x, y)</span>
-<span id="cb12-603"><a></a>            <span class="co"># immediately async prefetch next batch while model is doing the</span></span>
-<span id="cb12-604"><a></a>            <span class="co"># forward pass on the GPU</span></span>
-<span id="cb12-605"><a></a>            x, y <span class="op">=</span> <span class="va">self</span>.get_batch(<span class="st">'train'</span>)</span>
-<span id="cb12-606"><a></a>            loss <span class="op">=</span> fout[<span class="st">'loss'</span>] <span class="op">/</span> <span class="va">self</span>._gas</span>
-<span id="cb12-607"><a></a>            dtf.append(fout[<span class="st">'dt'</span>])</span>
-<span id="cb12-608"><a></a>            dtb_ <span class="op">=</span> <span class="va">self</span>._backward_step(</span>
-<span id="cb12-609"><a></a>                loss,</span>
-<span id="cb12-610"><a></a>                propagate_grads<span class="op">=</span>is_last_micro_step</span>
-<span id="cb12-611"><a></a>            )</span>
-<span id="cb12-612"><a></a>            dtb.append(dtb_)</span>
-<span id="cb12-613"><a></a>            dt.append(dtf <span class="op">+</span> dtb)</span>
-<span id="cb12-614"><a></a>        timers <span class="op">=</span> {</span>
-<span id="cb12-615"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
-<span id="cb12-616"><a></a>            <span class="st">'dt'</span>: np.array(dt),</span>
-<span id="cb12-617"><a></a>            <span class="st">'dt_tot'</span>: np.<span class="bu">sum</span>(dt),</span>
-<span id="cb12-618"><a></a>            <span class="st">'dt_avg'</span>: np.mean(dt),</span>
-<span id="cb12-619"><a></a>            <span class="st">'dtf'</span>: np.array(dtf),</span>
-<span id="cb12-620"><a></a>            <span class="st">'dtf_tot'</span>: np.<span class="bu">sum</span>(dtf),</span>
-<span id="cb12-621"><a></a>            <span class="st">'dtf_avg'</span>: np.mean(dtf),</span>
-<span id="cb12-622"><a></a>            <span class="st">'dtb'</span>: np.array(dtb),</span>
-<span id="cb12-623"><a></a>            <span class="st">'dtb_tot'</span>: np.<span class="bu">sum</span>(dtb),</span>
-<span id="cb12-624"><a></a>            <span class="st">'dtb_avg'</span>: np.mean(dtb)</span>
-<span id="cb12-625"><a></a>        }</span>
-<span id="cb12-626"><a></a>        metrics <span class="op">=</span> {</span>
-<span id="cb12-627"><a></a>            <span class="st">'iter'</span>: <span class="va">self</span>.config.iter_num,</span>
-<span id="cb12-628"><a></a>            <span class="st">'loss'</span>: loss,</span>
-<span id="cb12-629"><a></a>            <span class="st">'lr'</span>: lr,</span>
-<span id="cb12-630"><a></a>        }</span>
-<span id="cb12-631"><a></a>        <span class="va">self</span>.config.iter_num <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb12-632"><a></a>        <span class="cf">return</span> {</span>
-<span id="cb12-633"><a></a>            <span class="st">'metrics'</span>: metrics,</span>
-<span id="cb12-634"><a></a>            <span class="st">'timers'</span>: timers,</span>
-<span id="cb12-635"><a></a>            <span class="st">'x'</span>: x,</span>
-<span id="cb12-636"><a></a>            <span class="st">'y'</span>: y,</span>
-<span id="cb12-637"><a></a>        }</span>
-<span id="cb12-638"><a></a></span>
-<span id="cb12-639"><a></a>    <span class="kw">def</span> save_ckpt(</span>
-<span id="cb12-640"><a></a>            <span class="va">self</span>,</span>
-<span id="cb12-641"><a></a>            raw_model: Optional[torch.nn.Module <span class="op">|</span> GPT] <span class="op">=</span> <span class="va">None</span>,</span>
-<span id="cb12-642"><a></a>            add_to_wandb: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb12-643"><a></a>    ):</span>
-<span id="cb12-644"><a></a>        <span class="cf">if</span> raw_model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb12-645"><a></a>            model <span class="op">=</span> raw_model  <span class="co"># type:ignore</span></span>
-<span id="cb12-646"><a></a>        <span class="cf">else</span>:</span>
-<span id="cb12-647"><a></a>            model <span class="op">=</span> <span class="va">self</span>.model</span>
-<span id="cb12-648"><a></a>        <span class="cf">assert</span> model <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
-<span id="cb12-649"><a></a>        <span class="cf">assert</span> <span class="bu">isinstance</span>(model, torch.nn.Module)</span>
-<span id="cb12-650"><a></a>        <span class="co"># assert issubclass(GPT,  torch.nn.Module)</span></span>
-<span id="cb12-651"><a></a>        ckpt <span class="op">=</span> {</span>
-<span id="cb12-652"><a></a>            <span class="st">'model'</span>: model.state_dict(),</span>
-<span id="cb12-653"><a></a>            <span class="st">'optimizer'</span>: <span class="va">self</span>.optimizer.state_dict(),</span>
-<span id="cb12-654"><a></a>            <span class="st">'model_args'</span>: asdict(<span class="va">self</span>.config.model),</span>
-<span id="cb12-655"><a></a>            <span class="st">'iter_num'</span>: <span class="va">self</span>.config.iter_num,</span>
-<span id="cb12-656"><a></a>            <span class="st">'best_val_loss'</span>: <span class="va">self</span>.config.best_val_loss,</span>
-<span id="cb12-657"><a></a>            <span class="st">'config'</span>: asdict(<span class="va">self</span>.config),</span>
-<span id="cb12-658"><a></a>        }</span>
-<span id="cb12-659"><a></a>        <span class="co"># assert (</span></span>
-<span id="cb12-660"><a></a>        <span class="co">#     isinstance(model, GPT)</span></span>
-<span id="cb12-661"><a></a>        <span class="co">#     and issubclass(GPT, torch.nn.Module)</span></span>
-<span id="cb12-662"><a></a>        <span class="co"># )</span></span>
-<span id="cb12-663"><a></a>        <span class="co"># assert raw_model is not None</span></span>
-<span id="cb12-664"><a></a>        ckptfile <span class="op">=</span> Path(os.getcwd()).joinpath(<span class="st">'ckpt.pt'</span>)</span>
-<span id="cb12-665"><a></a>        modelfile <span class="op">=</span> Path(os.getcwd()).joinpath(<span class="st">'model.pth'</span>)</span>
-<span id="cb12-666"><a></a>        log.info(<span class="ss">f'Saving checkpoint to: </span><span class="sc">{</span>os<span class="sc">.</span>getcwd()<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb12-667"><a></a>        log.info(<span class="ss">f'Saving model to: </span><span class="sc">{</span>modelfile<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb12-668"><a></a>        torch.save(model.state_dict(), modelfile.as_posix())</span>
-<span id="cb12-669"><a></a>        torch.save(ckpt, ckptfile.as_posix())</span>
-<span id="cb12-670"><a></a>        add_to_ckpts_file(Path(os.getcwd()))</span>
-<span id="cb12-671"><a></a>        <span class="cf">if</span> add_to_wandb <span class="kw">and</span> wandb.run <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb12-672"><a></a>            artifact <span class="op">=</span> wandb.Artifact(<span class="st">'model'</span>, <span class="bu">type</span><span class="op">=</span><span class="st">'model'</span>)</span>
-<span id="cb12-673"><a></a>            artifact.add_file(modelfile.as_posix())</span>
-<span id="cb12-674"><a></a>            wandb.run.log_artifact(artifact)</span></code></pre></div>
+<div class="sourceCode" id="cb12" data-startfrom="487"><pre class="sourceCode numberSource python number-lines"><code class="sourceCode python" style="counter-reset: source-line 486;"><span id="cb12-487"><a></a>    <span class="kw">def</span> estimate_loss(<span class="va">self</span>):</span>
+<span id="cb12-488"><a></a>        out <span class="op">=</span> {}</span>
+<span id="cb12-489"><a></a>        <span class="va">self</span>.model.<span class="bu">eval</span>()</span>
+<span id="cb12-490"><a></a>        <span class="cf">for</span> split <span class="kw">in</span> <span class="va">self</span>.config.data.data.keys():</span>
+<span id="cb12-491"><a></a>            losses <span class="op">=</span> torch.zeros(<span class="va">self</span>.config.train.eval_iters)</span>
+<span id="cb12-492"><a></a>            <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.config.train.eval_iters):</span>
+<span id="cb12-493"><a></a>                x, y <span class="op">=</span> <span class="va">self</span>.get_batch(split)</span>
+<span id="cb12-494"><a></a>                <span class="cf">with</span> <span class="va">self</span>.config.ctx:</span>
+<span id="cb12-495"><a></a>                    _, loss <span class="op">=</span> <span class="va">self</span>.model_engine(x, y)</span>
+<span id="cb12-496"><a></a>                losses[k] <span class="op">=</span> loss.item()</span>
+<span id="cb12-497"><a></a>            out[split] <span class="op">=</span> losses.mean()</span>
+<span id="cb12-498"><a></a>        <span class="va">self</span>.model.train()</span>
+<span id="cb12-499"><a></a>        <span class="cf">return</span> out</span>
+<span id="cb12-500"><a></a></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -1377,6 +2227,9 @@ Figure&nbsp;7: The simplest, fastest repository for training / finetuning GPT ba
 
 <section id="hands-on-tutorial" class="title-slide slide level1 center">
 <h1>Hands-on Tutorial</h1>
+<div class="quarto-layout-panel" data-layout="[ 60, -5, 25 ]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
 <div class="panel-tabset" style="font-size: 0.9em; width: 100%!important; height: 100%!important;">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">📒 Shakespeare</a></li><li><a href="#tabset-3-2">🔗 Links</a></li></ul>
 <div class="tab-content" style="font-size: 0.9em; width: 100%!important; height: 100%!important;">
@@ -1393,6 +2246,24 @@ Figure&nbsp;7: The simplest, fastest repository for training / finetuning GPT ba
 <li><span style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt">🏡 <a href="https://saforem2.github.io/wordplay">Project Website</a></span></li>
 <li><span style="background-color:#f8f8f8; padding: 2pt; border-radius: 6pt">💻 <a href="https://github.com/saforem2/wordplay"><code>saforem2/wordplay</code></a></span></li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-figure-spacer quarto-layout-cell" style="flex-basis: 5.6%;justify-content: flex-start;">
+<p>&nbsp;</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 27.8%;justify-content: flex-start;">
+<div id="fig-qr-colab" class="quarto-figure quarto-figure-center quarto-float">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-qr-colab-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="./assets/qrcode-colab.png">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-qr-colab-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </div>

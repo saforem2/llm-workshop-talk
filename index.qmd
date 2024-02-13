@@ -170,12 +170,13 @@ Visualization from @yang2023harnessing
 
 ![](https://jalammar.github.io/images/gpt3/03-gpt3-training-step-back-prop.gif)
 
-**Pre-training**: Virtually all of the compute used during pretraining phase[^il-transf].
+
+**Pre-training**: Virtually all of the compute used during pretraining phase.  
+
+Figure from [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
 :::
 
 :::
-
-[^il-transf]: Figure from [The Illustrated Transformer](http://jalammar.github.io/illustrated-transformer/)
 
 :::
 
@@ -283,16 +284,15 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 
   This will create `data/shakespeare_char/{train.bin, val.bin}`.
 
-# [{{< iconify fa-brands github >}} `model.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py) {height="100%"}
-
-<!-- ::: {style="font-size: 0.75em;"} -->
+# Model [{{< iconify fa-brands github >}} `model.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/model.py) {height="100%"}
 
 ::: {.panel-tabset style="font-size: 0.75em; width: 100%!important; height: 100%!important;"}
 
 ### `CausalSelfAttention`
 
-```{.python include="model.py" code-line-numbers="true" start-line=65 end-line=155}
+```{.python include="model.py" code-line-numbers="true" start-line=64 end-line=155}
 ```
+
 ### `LayerNorm`
 
 ```{.python include="model.py" code-line-numbers="true" start-line=43 end-line=62}
@@ -315,24 +315,14 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 
 :::
 
-# [{{< iconify fa-brands github >}} `trainer.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py) {height="100%"}
+# Trainer [{{< iconify fa-brands github >}} `trainer.py`](https://github.com/saforem2/wordplay/blob/master/src/wordplay/trainer.py) {height="100%"}
 
 
 ::: {.panel-tabset style="font-size: 0.75em; width: 100%; height: 100%;"}
 
-### `get_batch`
-
-```{.python include="trainer.py" code-line-numbers="true" start-line=446 end-line=474}
-```
-
-### `estimate_loss`
-
-```{.python include="trainer.py" code-line-numbers="true" start-line=487 end-line=500}
-```
-
 ### `_forward_step`
 
-```{.python include="trainer.py" code-line-numbers="true" start-line=534 end-line=542}
+```{.python include="trainer.py" code-line-numbers="534-542"}
 ```
 
 ### `_backward_step`
@@ -345,9 +335,20 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 ```{.python include="trainer.py" code-line-numbers="true" start-line=571 end-line=674}
 ```
 
+### `get_batch`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=446 end-line=474}
+```
+
+### `estimate_loss`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=487 end-line=500}
+```
 :::
 
 # Hands-on Tutorial
+
+::: {layout="[ 60, -5, 25 ]" layout-valign="center"}
 
 ::: {.panel-tabset style="font-size: 0.9em; width: 100%!important; height: 100%!important;"}
 
@@ -364,6 +365,13 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 
 :::
 
+::: {#fig-qr-colab}
+
+![](./assets/qrcode-colab.png)
+
+:::
+
+:::
 
 # {background-iframe="https://saforem2.github.io/wordplay"}
 
