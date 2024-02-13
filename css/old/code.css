@@ -1,0 +1,110 @@
+code span.al {
+  background-color: #4d1f24;
+  font-weight: bold;
+  color: #95da4c;
+}
+code span.an {
+  color: #98c379;
+}
+code span.at {
+  color: #c678dd;
+}
+code span.bn {
+  color: #d19a66;
+}
+code span.bu {
+  color: #c678dd;
+}
+code span.ch {
+  color: #98c379;
+}
+code span.co {
+  font-style: italic;
+  color: #5c6370;
+}
+code span.cv {
+  font-style: italic;
+  color: #e06c75;
+}
+code span.cn {
+  color: #d19a66;
+}
+code span.cf {
+  color: #c678dd;
+}
+code span.dt {
+  color: #c678dd;
+}
+code span.dv {
+  color: #d19a66;
+}
+code span.do {
+  color: #a43340;
+}
+code span.er {
+  color: #f44747;
+  text-decoration: underline;
+}
+code span.ex {
+  font-weight: bold;
+  color: #61afef;
+}
+code span.fl {
+  color: #d19a66;
+}
+code span.fu {
+  color: #61afef;
+}
+code span.im {
+  color: #98c379;
+}
+code span.in {
+  color: #c45b00;
+}
+code span.kw {
+  color: #c678dd;
+}
+pre > code.sourceCode > span {
+  color: #abb2bf;
+}
+code span {
+  color: #abb2bf;
+}
+code.sourceCode > span {
+  color: #abb2bf;
+}
+div.sourceCode,
+div.sourceCode pre.sourceCode {
+  color: #abb2bf;
+}
+code span.op {
+  color: #c678dd;
+}
+code span.pp {
+  color: #c678dd;
+}
+code span.re {
+  background-color: #153042;
+  color: #2980b9;
+}
+code span.sc {
+  color: #56b6c2;
+}
+code span.ss {
+  color: #da4453;
+}
+code span.st {
+  color: #98c379;
+}
+code span.va {
+  color: #e06c75;
+}
+code span.vs {
+  color: #da4453;
+}
+code span.wa {
+  color: #da4453;
+}
+.prevent-inlining {
+content: "</";
+}

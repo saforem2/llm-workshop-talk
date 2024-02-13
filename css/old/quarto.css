@@ -1,0 +1,131 @@
+.quarto-layout-panel {
+    margin-bottom: 1em
+}
+
+.quarto-layout-panel>figure {
+    width: 100%
+}
+
+.quarto-layout-panel>figure>figcaption,.quarto-layout-panel>.panel-caption {
+    margin-top: 10pt
+}
+
+.quarto-layout-panel>.table-caption {
+    margin-top: 0px
+}
+
+.table-caption p {
+    margin-bottom: .5em
+}
+
+.quarto-layout-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start
+}
+
+.quarto-layout-valign-top {
+    align-items: flex-start
+}
+
+.quarto-layout-valign-bottom {
+    align-items: flex-end
+}
+
+.quarto-layout-valign-center {
+    align-items: center
+}
+
+.quarto-layout-cell {
+    position: relative;
+    margin-right: 20px
+}
+
+.quarto-layout-cell:last-child {
+    margin-right: 0
+}
+
+.quarto-layout-cell figure,.quarto-layout-cell>p {
+    margin: .2em
+}
+
+.quarto-layout-cell img {
+    max-width: 100%
+}
+
+.quarto-layout-cell .html-widget {
+    width: 100% !important
+}
+
+.quarto-layout-cell div figure p {
+    margin: 0
+}
+
+.quarto-layout-cell figure {
+    display: inline-block;
+    margin-inline-start:0;margin-inline-end:0}
+
+.quarto-layout-cell table {
+    display: inline-table
+}
+
+.quarto-layout-cell-subref figcaption,figure .quarto-layout-row figure figcaption {
+    text-align: center;
+    font-style: italic
+}
+
+.quarto-figure {
+    position: relative;
+    margin-bottom: 1em
+}
+
+.quarto-figure>figure {
+    width: 100%;
+    margin-bottom: 0
+}
+
+.quarto-figure-left>figure>p,.quarto-figure-left>figure>div {
+    text-align: left
+}
+
+.quarto-figure-center>figure>p,.quarto-figure-center>figure>div {
+    text-align: center
+}
+
+.quarto-figure-right>figure>p,.quarto-figure-right>figure>div {
+    text-align: right
+}
+.quarto-figure>.anchorjs-link {
+    position: absolute;
+    top: .6em;
+    right: .5em
+}
+.quarto-figure:hover>.anchorjs-link,div[id^=tbl-]:hover>.anchorjs-link,h2:hover>.anchorjs-link,h3:hover>.anchorjs-link,h4:hover>.anchorjs-link,h5:hover>.anchorjs-link,h6:hover>.anchorjs-link,.reveal-anchorjs-link>.anchorjs-link {
+    opacity: 1
+}
+
+[data-tippy-root] {
+    display: inline-block
+}
+
+.tippy-content .footnote-back {
+    display: none
+}
+
+.quarto-embedded-source-code {
+    display: none
+}
+
+.quarto-unresolved-ref {
+    font-weight: 600
+}
+
+.quarto-cover-image {
+    max-width: 35%;
+    float: right;
+    margin-left: 30px
+}
+
+.quarto-dark .code-with-filename .code-with-filename-file,.quarto-dark .code-with-filename .code-with-filename-file pre {
+    background-color: #555
+}
