@@ -1,4 +1,4 @@
-# Creating Small(-ish) LLMs
+# LLMs from Scratch
 Sam Foreman
 [<span class="orcid-green"></span>](https://orcid.org/0000-0002-9981-0876)
 2024-02-13

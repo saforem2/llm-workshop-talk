@@ -1,1 +1,1 @@
-Sitemap: https://saforem2.github.io/LLM-tutorial/sitemap.xml
+Sitemap: https://saforem2.github.io/llm-workshop-talk/sitemap.xml

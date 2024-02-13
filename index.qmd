@@ -36,7 +36,7 @@ format:
       # - white
       # - css/light.scss
       - css/common.scss
-      # - css/syntax-light.scss
+      - css/syntax-light.scss
     self-contained: false
     embed-resources: false
     self-contained-math: false
@@ -65,7 +65,7 @@ format:
 
 # LLMs from Scratch
 
-::: {layout="[ 50, 50 ]" layout-valign="center"}
+::: {layout="[50,50]" layout-valign="center" style="display: flex; align-items:flex-end;"}
 
 ::: {.col1}
 

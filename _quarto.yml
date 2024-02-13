@@ -9,7 +9,7 @@ project:
 
 filters:
   - include-code-files
-title: "Creating Small(-ish) LLMs"
+title: "LLMs from Scratch"
 date: today
 date-modified: last-modified
 favicon: "./favicon.svg"
@@ -36,8 +36,8 @@ author:
 citation:
    author: Sam Foreman
    type: speech
-   title: "Creating Small(-ish) LLMs"
-   url: https://saforem2.github.io/LLM-tutorial
+   title: "LLMs from Scratch"
+   url: https://saforem2.github.io/llm-workshop-talk
 # favicon: "./assets/favicon.svg"
 # format:
 #   html:
@@ -49,11 +49,11 @@ website:
   description: "Creating Small(-ish) LLMs"
   page-navigation: true
   title: "Creating Small(-ish) LLMs"
-  site-url: "https://saforem2.github.io/LLM-tutorial"
+  site-url: "https://saforem2.github.io/llm-workshop-talk"
   # favicon: "./favicon.svg"
   back-to-top-navigation: true
   # reader-mode: true
-  repo-url: https://github.com/saforem2/LLM-tutorial
+  repo-url: https://github.com/saforem2/llm-workshop-talk
   repo-actions: [source, edit, issue]
   google-analytics: G-XVM2Y822Y1
   sidebar: false
@@ -64,7 +64,7 @@ website:
     foregound: "#777777"
     right:
       - icon: github
-        href: https://github.com/saforem2/LLM-tutorial
+        href: https://github.com/saforem2/llm-workshop-talk
         aria-label: GitHub
   page-footer:
     left: "[samforeman.me](https://samforeman.me)"
