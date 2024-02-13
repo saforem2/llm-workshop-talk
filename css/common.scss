@@ -208,7 +208,7 @@ pre {
     display: contents!important;
     background-color: $code-block-bg-color;
     margin-bottom: 1rem;
-    overflow: auto;
+    // overflow: auto;
     font-family: $font-family-monospace;
     padding: .5rem;
 }
@@ -217,7 +217,7 @@ pre code {
     background-color: $code-block-bg-color;
     color: inherit;
     word-break: normal;
-    overflow-x: scroll;
+    // overflow-x: scroll;
     font-family: $font-family-monospace;
 }
 
@@ -1469,4 +1469,12 @@ code a:any-link {
     margin-top: 0.4em;
     margin-bottom: 0.2em;
     margin-left: inherit;
+}
+
+.reveal pre code {
+    display: block;
+    padding: 5px;
+    overflow: visible;
+    // max-height: 400px;
+    word-wrap: normal;
 }

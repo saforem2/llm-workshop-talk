@@ -320,9 +320,13 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 
 ::: {.panel-tabset style="font-size: 0.75em; width: 100%; height: 100%;"}
 
+### `get_batch`
+
+```{.python include="trainer.py" code-line-numbers="true" start-line=446 end-line=474}
+```
 ### `_forward_step`
 
-```{.python include="trainer.py" code-line-numbers="534-542"}
+```{.python include="trainer.py" code-line-numbers="true" start-line=534 end-line=542}
 ```
 
 ### `_backward_step`
@@ -333,11 +337,6 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 ### `train_step`
 
 ```{.python include="trainer.py" code-line-numbers="true" start-line=571 end-line=674}
-```
-
-### `get_batch`
-
-```{.python include="trainer.py" code-line-numbers="true" start-line=446 end-line=474}
 ```
 
 ### `estimate_loss`
