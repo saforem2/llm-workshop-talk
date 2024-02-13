@@ -369,11 +369,7 @@ python3 -c 'import wordplay; print(wordplay.__file__)'
 
 :::
 
-::: {#fig-qr-colab}
-
-![](./assets/qrcode-colab.png)
-
-:::
+![(link to Colab Notebook)](./assets/qrcode-colab.png)
 
 :::
 
