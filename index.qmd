@@ -81,7 +81,8 @@ format:
 - [{{< iconify line-md github-loop >}}`argonne-lcf/llm-workshop`](https://github.com/argonne-lcf/llm-workshop)
 - [{{< iconify line-md github-loop >}}`saforem2/`](https://github.com/saforem2)
   - [{{< iconify line-md github-loop >}}`wordplay` 🎮💬](https://saforem2.github.io/wordplay)
-  - [{{< bi easel >}} `llm-workshop-talk`](https://saforem2.github.io/LLM-tutorial)
+  - [{{< iconify line-md github-loop >}} `llm-workshop-talk`](https://github.com/saforem2/llm-workshop-talk)
+    - [\[{{< bi easel >}} slides\]](https://github.com/saforem2/llm-workshop-talk) 
 
 
 :::
